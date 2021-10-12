@@ -1,0 +1,15 @@
+﻿[(TMenuItem)]
+Coordinates=368,56,88,36
+
+[BotaoCalcular]
+Coordinates=10,144,95,58
+
+[]
+Coordinates=167,10,135,58
+
+[MemoDemonstrativoDeParcelas]
+Coordinates=312,10,164,58
+
+[ComboBoxQuantidadeDeParcelas]
+Coordinates=10,10,147,124
+

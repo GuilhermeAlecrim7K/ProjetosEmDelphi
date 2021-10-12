@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/10/09 21:29:21.000.447,=C:\Projetos\Unit1.pas</Transaction>
+    <Transaction>2021/10/09 21:52:07.000.277,C:\Projetos\Unit1.dfm=C:\Projetos\P2CalculadoraDeParcelas\CalculadoraDeParcelas.dfm</Transaction>
+    <Transaction>2021/10/09 21:52:07.000.277,C:\Projetos\Unit1.pas=C:\Projetos\P2CalculadoraDeParcelas\CalculadoraDeParcelas.pas</Transaction>
+    <Transaction>2021/10/09 22:20:46.000.706,C:\Projetos\Project1.dproj=C:\Projetos\P2CalculadoraDeParcelas\P2CalculadoraDeParcelas.dproj</Transaction>
+    <Transaction>2021/10/10 22:05:51.000.499,=C:\Projetos\P2CalculadoraDeParcelas\Unit1.pas</Transaction>
+    <Transaction>2021/10/10 22:06:01.000.628,=C:\Projetos\P2CalculadoraDeParcelas\Unit1.pas</Transaction>
+    <Transaction>2021/10/10 22:18:37.000.586,C:\Projetos\P2CalculadoraDeParcelas\Unit1.dfm=C:\Projetos\P2CalculadoraDeParcelas\ConfirmScreen.dfm</Transaction>
+    <Transaction>2021/10/10 22:18:37.000.586,C:\Projetos\P2CalculadoraDeParcelas\Unit1.pas=C:\Projetos\P2CalculadoraDeParcelas\ConfirmScreen.pas</Transaction>
+  </Transactions>
+</BorlandProject>
