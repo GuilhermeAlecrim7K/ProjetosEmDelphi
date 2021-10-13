@@ -1,0 +1,26 @@
+unit Formulas;
+
+interface
+
+  function JurosCompostos(C: currency; I: real; T: integer): currency; export; stdcall;
+  function JurosSimples(C: currency; I: real; T: integer): currency; export; stdcall;
+
+var
+  j: integer;
+
+implementation
+
+function JurosCompostos(C: currency; I: real; T: integer): currency; export; stdcall;
+    begin
+      Result:= 1;
+      for j := 1 to T do
+        result:= result* (1+I);
+      result:= C*result;
+    end;
+
+function JurosSimples(C: currency; I: real; T: integer): currency; export; stdcall;
+  begin
+    Result := C*i*t;
+  end;
+
+end.

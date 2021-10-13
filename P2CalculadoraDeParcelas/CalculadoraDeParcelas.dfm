@@ -2,9 +2,11 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Calculadora de Parcelas'
-  ClientHeight = 182
+  ClientHeight = 238
   ClientWidth = 401
-  Color = clMedGray
+  Color = cl3DLight
+  DockSite = True
+  DragKind = dkDock
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -13,6 +15,19 @@ object MainForm: TMainForm
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object LabelValorMin: TLabel
+    Left = 33
+    Top = 61
+    Width = 87
+    Height = 13
+    Caption = 'Min.: R$ 1.000,00'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
   object BotaoCalcular: TButton
     Left = 296
     Top = 34
@@ -28,10 +43,16 @@ object MainForm: TMainForm
     Top = 36
     Width = 103
     Height = 21
+    AutoDropDown = True
+    AutoCloseUp = True
+    Style = csDropDownList
+    Color = cl3DLight
     Enabled = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 1
     TextHint = 'Qtd. de Parcelas'
-    OnChange = ComboBoxQuantidadeDeParcelasChange
+    OnSelect = ComboBoxQuantidadeDeParcelasSelect
     Items.Strings = (
       #192' vista'
       '2x sem juros'
@@ -44,13 +65,21 @@ object MainForm: TMainForm
       '9x sem juros'
       '10x sem juros'
       '11x sem juros'
-      '12x sem juros')
+      '12x sem juros'
+      'Mais parcelas')
   end
   object MemoDemonstrativoDeParcelas: TMemo
     Left = 33
-    Top = 72
+    Top = 80
     Width = 338
-    Height = 65
+    Height = 100
+    Lines.Strings = (
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' ')
     ReadOnly = True
     TabOrder = 3
     Visible = False
@@ -58,9 +87,9 @@ object MainForm: TMainForm
   object EditValorTotalDoProduto: TMaskEdit
     Left = 33
     Top = 36
-    Width = 100
+    Width = 96
     Height = 21
-    EditMask = 'R$ 99.990,00;0;_'
+    EditMask = 'R$ 90.000,00;0;_'
     MaxLength = 12
     TabOrder = 0
     Text = ''
@@ -68,8 +97,8 @@ object MainForm: TMainForm
     OnChange = EditValorTotalDoProdutoChange
   end
   object BotaoConfirmar: TButton
-    Left = 111
-    Top = 146
+    Left = 209
+    Top = 186
     Width = 162
     Height = 25
     Caption = 'Confirmar pagamento'
