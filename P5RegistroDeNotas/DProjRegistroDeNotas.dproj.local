@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2021/10/20 22:07:29.630,=C:\Projetos\Unit1.pas</Transaction>
+    <Transaction>2021/10/20 23:04:18.111,C:\Projetos\P5RegistroDeNotas\RegistroDeNotas.pas=C:\Projetos\Unit1.pas</Transaction>
+    <Transaction>2021/10/20 23:04:18.111,C:\Projetos\P5RegistroDeNotas\RegistroDeNotas.dfm=C:\Projetos\Unit1.dfm</Transaction>
+    <Transaction>2021/10/20 23:04:40.365,C:\Projetos\P5RegistroDeNotas\DProjRegistroDeNotas.dproj=C:\Projetos\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
