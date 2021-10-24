@@ -2,14 +2,14 @@ program DProjOperacoesBancarias;
 
 uses
   Vcl.Forms,
-  Principal in 'Principal.pas' {Form1},
-  Classes in 'Classes.pas';
+  Principal in 'Principal.pas' {MainForm},
+  MinhasClasses in 'MinhasClasses.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.

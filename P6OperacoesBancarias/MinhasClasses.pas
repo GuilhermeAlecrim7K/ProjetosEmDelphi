@@ -1,4 +1,4 @@
-unit Classes;
+unit MinhasClasses;
 
 interface
 
@@ -9,6 +9,7 @@ type
     FSaldoDaConta: currency;
   public
     property NomeTitular: string read FNomeTitular write FNomeTitular;
+    property SaldoDaConta: currency read FSaldoDaConta;
     function Saque(Valor: currency): currency; virtual;
     function Deposito(Valor: currency): currency; virtual;
     function ConsultaSaldo: currency; virtual;
@@ -19,6 +20,13 @@ type
     function Saque(Valor: currency): currency; override;
     function Deposito(Valor: currency): currency; override;
     function ConsultaSaldo: currency; override;
+  end;
+
+  TContaPoupanca = class(TConta)
+    public
+      function Saque(Valor: currency): currency; override;
+      function Deposito(Valor: currency): currency; override;
+      function ConsultaSaldo: currency; override;
   end;
 
 implementation
@@ -53,6 +61,23 @@ begin
 end;
 
 function TContaCorrente.Saque(Valor: currency): currency;
+begin
+
+end;
+
+{ TContaPoupanca }
+
+function TContaPoupanca.ConsultaSaldo: currency;
+begin
+
+end;
+
+function TContaPoupanca.Deposito(Valor: currency): currency;
+begin
+
+end;
+
+function TContaPoupanca.Saque(Valor: currency): currency;
 begin
 
 end;
