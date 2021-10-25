@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Conta banc'#225'ria'
-  ClientHeight = 222
-  ClientWidth = 346
+  ClientHeight = 255
+  ClientWidth = 320
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,48 +11,64 @@ object MainForm: TMainForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object LabelInstrucao: TLabel
+    Left = 64
+    Top = 232
+    Width = 75
+    Height = 13
+    Caption = 'Pressione Enter'
+    Visible = False
+  end
   object Memo1: TMemo
     Left = 8
-    Top = 35
+    Top = 67
     Width = 291
     Height = 91
-    TabOrder = 0
+    Enabled = False
+    TabOrder = 2
   end
   object BtnEmitirSaldo: TButton
-    Left = 40
-    Top = 132
+    Left = 32
+    Top = 164
     Width = 75
     Height = 25
     Caption = 'Emitir saldo'
     Enabled = False
-    TabOrder = 1
+    TabOrder = 3
+    OnClick = BtnEmitirSaldoClick
   end
   object BtnDeposito: TButton
-    Left = 121
-    Top = 132
+    Left = 113
+    Top = 164
     Width = 75
     Height = 25
     Caption = 'Dep'#243'sito'
     Enabled = False
-    TabOrder = 2
+    TabOrder = 4
+    OnClick = BtnDepositoClick
   end
   object BtnSaque: TButton
-    Left = 202
-    Top = 132
+    Left = 194
+    Top = 164
     Width = 75
     Height = 25
     Caption = 'Saque'
     Enabled = False
-    TabOrder = 3
+    TabOrder = 5
   end
   object CmbBoxTipoConta: TComboBox
     Left = 8
-    Top = 8
+    Top = 40
     Width = 201
     Height = 21
-    TabOrder = 4
+    AutoCloseUp = True
+    Style = csDropDownList
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
     TextHint = 'Tipo de conta'
     OnSelect = CmbBoxTipoContaSelect
     Items.Strings = (
@@ -61,11 +77,23 @@ object MainForm: TMainForm
   end
   object BtnExibirDados: TButton
     Left = 224
-    Top = 8
+    Top = 40
     Width = 75
     Height = 21
     Caption = 'Exibir dados'
-    TabOrder = 5
+    TabOrder = 1
     OnClick = BtnExibirDadosClick
+  end
+  object EditQuantia: TMaskEdit
+    Left = 64
+    Top = 213
+    Width = 169
+    Height = 21
+    EditMask = 'R$ 999,00;0;_'
+    MaxLength = 9
+    TabOrder = 6
+    Text = ''
+    Visible = False
+    OnEnter = EditQuantiaEnter
   end
 end

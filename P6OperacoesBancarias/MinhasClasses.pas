@@ -9,7 +9,6 @@ type
     FSaldoDaConta: currency;
   public
     property NomeTitular: string read FNomeTitular write FNomeTitular;
-    property SaldoDaConta: currency read FSaldoDaConta;
     function Saque(Valor: currency): currency; virtual;
     function Deposito(Valor: currency): currency; virtual;
     function ConsultaSaldo: currency; virtual;
@@ -40,29 +39,34 @@ end;
 
 function TConta.Deposito(Valor: currency): currency;
 begin
-  //Procedimentos
+  FSaldoDaConta:= FSaldoDaConta + Valor;
+  Result:= FSaldoDaConta;
 end;
 
 function TConta.Saque(Valor: currency): currency;
 begin
-  //Procedimentos
+  FSaldoDaConta:= FSaldoDaConta - Valor;
+  Result:= FSaldoDaConta;
 end;
 
 { TContaCorrente }
 
 function TContaCorrente.ConsultaSaldo: currency;
 begin
-  //Result:= não pode ser inherited
+  Result:= FSaldoDaConta; //Criar variável saldo da conta para TContaCorrente
 end;
 
 function TContaCorrente.Deposito(Valor: currency): currency;
 begin
-
+  //Colocar para herdar
 end;
 
 function TContaCorrente.Saque(Valor: currency): currency;
 begin
-
+    if (Valor<1000) and (FSaldoDaConta - (Valor * 0.99) > 0) then
+    begin
+      FSaldoDaConta:= FSaldoDaConta - (Valor * 0.99);
+    end;
 end;
 
 { TContaPoupanca }
@@ -74,11 +78,19 @@ end;
 
 function TContaPoupanca.Deposito(Valor: currency): currency;
 begin
-
+  if Valor>200 then
+    begin
+      FSaldoDaConta:= FSaldoDaConta + Valor;
+      Result:= FSaldoDaConta;
+    end;
 end;
 
 function TContaPoupanca.Saque(Valor: currency): currency;
 begin
+  if (Valor<500) and (FSaldoDaConta - Valor > 0) then
+  begin
+    FSaldoDaConta:= FSaldodaConta - Valor;
+  end
 
 end;
 
