@@ -22,7 +22,7 @@ public
   constructor create;
   property IdPneu: string read FIdPneu;
   property KmRestanteVidaAtual: integer read FKmRestante;
-  property LimiteRodagem: integer write FLimiteRodagem;
+  property LimiteRodagem: integer read FLimiteRodagem write FLimiteRodagem;
   function ReadQtdVidas: integer;
   function WriteQuilometragem(Km: integer; out msg: string): boolean; override;
 
