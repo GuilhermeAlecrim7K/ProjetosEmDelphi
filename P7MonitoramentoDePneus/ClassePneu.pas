@@ -14,16 +14,17 @@ end;
 TPneu = class (TVidaPneu)
 private
   FIdPneu: string;
+  FLimiteRodagem: integer;
   FQtdVidas: integer;
   FKmRestante: integer;
-  FLimiteRodagem: integer;
   FKmTotal: integer;
 public
   constructor create;
   property IdPneu: string read FIdPneu;
-  property KmRestanteVidaAtual: integer read FKmRestante;
   property LimiteRodagem: integer read FLimiteRodagem write FLimiteRodagem;
   function ReadQtdVidas: integer;
+  function KmRestanteVidaAtual: integer;
+  function KmTotalPercorrido: integer;
   function WriteQuilometragem(Km: integer; out msg: string): boolean; override;
 
 end;
@@ -60,18 +61,30 @@ begin
   Result:= FQtdVidas;
 end;
 
+function TPneu.KmRestanteVidaAtual: integer;
+begin
+  FKmRestante:= FLimiteRodagem - FQuilometragem;
+  Result:= FKmRestante;
+end;
+
+function TPneu.KmTotalPercorrido: integer;
+begin
+  Result:= FKmTotal;
+end;
+
 function TPneu.WriteQuilometragem(Km: integer; out msg: string): boolean;
 const
   MSG_ERRO = 'Este pneu não pode ser mais recapeado e chegou ao fim de sua vida.';
 begin
   inherited;
   FKmTotal:= FKmTotal + Km;
-  if (FQuilometragem > FLimiteRodagem) then
+  if (FQuilometragem >= FLimiteRodagem) then
     begin
       if (FQtdVidas>0) then
         begin
         FQtdVidas:= FQtdVidas -1;
         FQuilometragem:= 0;
+        Result:= True;
         end
       else
         begin
@@ -81,8 +94,6 @@ begin
         Result:= False;
         end;
     end
-  else
-    FKmRestante:= FLimiteRodagem - FQuilometragem;
 end;
 
 end.
