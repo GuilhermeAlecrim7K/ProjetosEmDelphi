@@ -40,9 +40,12 @@ var
 procedure TForm1.BtnCancelarItemClick(Sender: TObject);
 var
   DelLine, ln, cl: Byte;
+  sValor: string;
 begin
-  DelLine:= StrToInt(InputBox('Excluir Produto', 'Qual a linha do produto a ser excluído?', 'Número da linha'));
-  ValorTotal:= ValorTotal - StrGrdTabela.Cells[4, DelLine].ToInteger; // Falha ao converter para inteiro
+  DelLine:= StrToInt(InputBox('Excluir Produto', 'Qual a linha do produto a ser excluído?',''));
+  sValor:= Copy(StrGrdTabela.Cells[4, DelLine], 4, length(StrGrdTabela.Cells[4, DelLine])-3);
+  sValor:= sValor;
+  ValorTotal:= ValorTotal - StrToCurr(sValor);
   for ln := DelLine to LastLine do
     begin
       for cl := 1 to 4 do
