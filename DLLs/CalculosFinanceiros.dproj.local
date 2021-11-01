@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject>
-	<Transactions>
-    <Transaction>2021/10/12 17:20:58.000.349,C:\Projetos\Project1.dproj=C:\Projetos\DLLs\CalculosFinanceiros.dproj</Transaction>
-    <Transaction>2021/10/12 17:32:12.000.981,=C:\Projetos\DLLs\Unit1.pas</Transaction>
-    <Transaction>2021/10/12 17:33:16.000.062,C:\Projetos\DLLs\Unit1.pas=C:\Projetos\DLLs\Formulas.pas</Transaction>
-  </Transactions>
-</BorlandProject>
