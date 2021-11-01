@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject>
-  <Transactions>
-    <Transaction>2021/10/16 21:05:56.013,=C:\Projetos\Unit1.pas</Transaction>
-    <Transaction>2021/10/16 21:07:35.267,C:\Projetos\P4FizzBuzz\FizzBuzz.dfm=C:\Projetos\Unit1.dfm</Transaction>
-    <Transaction>2021/10/16 21:07:35.267,C:\Projetos\P4FizzBuzz\FizzBuzz.pas=C:\Projetos\Unit1.pas</Transaction>
-    <Transaction>2021/10/16 22:11:02.855,C:\Projetos\P4FizzBuzz\FizzBuzzProj.dproj=C:\Projetos\Project1.dproj</Transaction>
-  </Transactions>
-</BorlandProject>
