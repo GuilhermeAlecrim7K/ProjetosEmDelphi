@@ -28,17 +28,19 @@ RecordNotas = Record
 
 var
   Form1: TForm1;
-  MaiorNota, MenorNota, Media: double;
-  IndexMenorNota, IndexMaiorNota: Integer;
-  GNotas: array[0..9] of RecordNotas;
 
 implementation
 
 {$R *.dfm}
 
+var
+  MaiorNota, MenorNota, Media: double;
+  GNotas: array[0..9] of RecordNotas;
+
 procedure TForm1.Button1Click(Sender: TObject);
 var
   I: Integer;
+  IndexMenorNota, IndexMaiorNota: Integer;
 begin
   MemoMain.Lines.Clear;
   MaiorNota:= 0;
@@ -46,8 +48,8 @@ begin
   Media:= 0;
   for I := Low(Gnotas) to High(Gnotas) do
     begin
-      Gnotas[I].Nome:= InputBox('Nome do aluno', 'Qual o nome do aluno','');
-      Gnotas[I].Nota:= Random(9) + (Random(9) / 10);
+      Gnotas[I].Nome:= InputBox('Nome do aluno', 'Qual o nome do aluno:','');
+      Gnotas[I].Nota:= Random(10) + (Random(10) / 10);
       Media:= Media + GNotas[I].Nota;
       if Gnotas[I].Nota > MaiorNota then
         begin
@@ -62,9 +64,9 @@ begin
       MemoMain.Lines.Add(Gnotas[I].Nome + ': ' + FloatToStr(Gnotas[I].Nota));
     end;
   EditMediaTurma.Visible:= True; EditMediaTurma.Text:= FloatToStr(Media/length(Gnotas));
-  EditMenorNota.Visible:= True; EditMaiorNota.Text:= Gnotas[IndexMenorNota].Nome + ': ' + FloatToStr(GNotas[IndexMenorNota].Nota);
-  EditMaiorNota.Visible:= True; EditMenorNota.Text:= Gnotas[IndexMaiorNota].Nome + ': ' + FloatToStr(Gnotas[IndexMaiorNota].Nota);
-  //Faltando considerar os casos com notas iguais
+  EditMenorNota.Visible:= True; EditMaiorNota.Text:= Gnotas[IndexMaiorNota].Nome + ': ' + FloatToStr(GNotas[IndexMaiorNota].Nota);
+  EditMaiorNota.Visible:= True; EditMenorNota.Text:= Gnotas[IndexMenorNota].Nome + ': ' + FloatToStr(Gnotas[IndexMenorNota].Nota);
+  //Criar array dinamico para guardar notas iguais para maior e menor nota.
 end;
 
 end.
