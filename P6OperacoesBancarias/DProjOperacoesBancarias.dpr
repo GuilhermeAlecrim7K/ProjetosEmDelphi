@@ -3,7 +3,8 @@ program DProjOperacoesBancarias;
 uses
   Vcl.Forms,
   Principal in 'Principal.pas' {MainForm},
-  MinhasClasses in 'MinhasClasses.pas';
+  MinhasClasses in 'MinhasClasses.pas',
+  Operacao in 'Operacao.pas' {FrmOperacao};
 
 {$R *.res}
 

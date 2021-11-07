@@ -2,7 +2,7 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Conta banc'#225'ria'
-  ClientHeight = 255
+  ClientHeight = 213
   ClientWidth = 320
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,20 +14,13 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object LabelInstrucao: TLabel
-    Left = 64
-    Top = 232
-    Width = 75
-    Height = 13
-    Caption = 'Pressione Enter'
-    Visible = False
-  end
-  object Memo1: TMemo
+  object MemoInfoPanel: TMemo
     Left = 8
     Top = 67
     Width = 291
     Height = 91
-    Enabled = False
+    ReadOnly = True
+    ScrollBars = ssVertical
     TabOrder = 2
   end
   object BtnEmitirSaldo: TButton
@@ -58,12 +51,14 @@ object MainForm: TMainForm
     Caption = 'Saque'
     Enabled = False
     TabOrder = 5
+    OnClick = BtnSaqueClick
   end
   object CmbBoxTipoConta: TComboBox
     Left = 8
     Top = 40
     Width = 201
     Height = 21
+    AutoDropDown = True
     AutoCloseUp = True
     Style = csDropDownList
     ParentShowHint = False
@@ -83,17 +78,5 @@ object MainForm: TMainForm
     Caption = 'Exibir dados'
     TabOrder = 1
     OnClick = BtnExibirDadosClick
-  end
-  object EditQuantia: TMaskEdit
-    Left = 64
-    Top = 213
-    Width = 169
-    Height = 21
-    EditMask = 'R$ 999,00;0;_'
-    MaxLength = 9
-    TabOrder = 6
-    Text = ''
-    Visible = False
-    OnEnter = EditQuantiaEnter
   end
 end

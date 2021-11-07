@@ -8,78 +8,108 @@ uses
 
 type
   TMainForm = class(TForm)
-    Memo1: TMemo;
+    MemoInfoPanel: TMemo;
     BtnEmitirSaldo: TButton;
     BtnDeposito: TButton;
     BtnSaque: TButton;
     CmbBoxTipoConta: TComboBox;
     BtnExibirDados: TButton;
-    EditQuantia: TMaskEdit;
-    LabelInstrucao: TLabel;
+    procedure FormCreate(Sender: TObject);
     procedure BtnExibirDadosClick(Sender: TObject);
     procedure CmbBoxTipoContaSelect(Sender: TObject);
     procedure BtnEmitirSaldoClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure BtnDepositoClick(Sender: TObject);
-    procedure EditQuantiaEnter(Sender: TObject);
+    procedure BtnSaqueClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
 
+type
+  EnumConta = (Corrente, Poupanca);
+  procedure OperationOpen(Operacao:string); overload;
+  procedure OperationOpen(Operacao:string; LimiteSaque: currency); overload;
+
 var
   MainForm: TMainForm;
 
 implementation
 
-uses MinhasClasses;
+uses MinhasClasses, Operacao;
 
 {$R *.dfm}
 
 var
-  Conta: TConta;
   ContaCorrente: TContaCorrente;
   ContaPoupanca: TContaPoupanca;
+  TipoConta: EnumConta;
+
+const
+  OP_DEPOSITO = 'Depósito';
+  OP_SAQUE = 'Saque';
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  Conta:= TConta.Create;
   ContaCorrente:= TContaCorrente.Create;
   ContaPoupanca:= TContaPoupanca.Create;
 end;
 
-procedure TMainForm.BtnExibirDadosClick(Sender: TObject);
-var
-  TipoConta: string;
+procedure OperationOpen(Operacao: string);
 begin
-  Memo1.Clear;
-  TipoConta:= IntToStr(CmbBoxTipoConta.ItemIndex);
-{
-    if Conta<> nil then
+  FrmOperacao:= TFrmOperacao.Create(MainForm);
+  FrmOperacao.Caption:= Operacao;
+  try
+    FrmOperacao.ShowModal;
+  finally
+    FrmOperacao.Free;
+  end;
+end;
+
+procedure OperationOpen(Operacao: string; LimiteSaque: currency);
+begin
+  FrmOperacao:= TFrmOperacao.Create(MainForm);
+  FrmOperacao.Caption:= Operacao;
+  FrmOperacao.LblLimiteSaque.Caption:= FrmOperacao.LblLimiteSaque.Caption + Format('%m', [LimiteSaque]);
+  FrmOperacao.LblLimiteSaque.Visible:= True;
+  try
+    FrmOperacao.ShowModal;
+  finally
+    FrmOperacao.Free;
+  end;
+end;
+
+procedure TMainForm.CmbBoxTipoContaSelect(Sender: TObject);
+begin
+  MemoInfoPanel.Clear;
+  BtnEmitirSaldo.Enabled:= False;
+  BtnDeposito.Enabled:= False;
+  BtnSaque.Enabled:= False;
+  case CmbBoxTipoConta.ItemIndex of
+    0: TipoConta:= Corrente;
+    1: TipoConta:= Poupanca;
+  end;
+end;
+
+procedure TMainForm.BtnExibirDadosClick(Sender: TObject);
+begin
+  MemoInfoPanel.Clear;
+  case TipoConta of
+    Corrente:
       begin
-        Conta:= TConta.Create;
-        Conta:= nil;
+      MemoInfoPanel.Lines.Add('Nome do Titular: ' + ContaCorrente.NomeTitular);
       end;
-}
-  Conta.NomeTitular:= 'Guilherme Ferreira Alecrim';
-  Memo1.Lines.Add('Nome do Titular: ' + Conta.NomeTitular);
-  //Memo1.Lines.Add('Saldo Disponível na Conta: ' + FloatToStr(Conta.SaldoDaConta));
+    Poupanca:
+      begin
+      MemoInfoPanel.Lines.Add('Nome do Titular: ' + ContaPoupanca.NomeTitular);
+      end;
+  end;
   BtnEmitirSaldo.Enabled:= True;
   BtnDeposito.Enabled:= True;
   BtnSaque.Enabled:= True;
 end;
 
-procedure TMainForm.CmbBoxTipoContaSelect(Sender: TObject);
-begin
-  Memo1.Clear;
-  BtnEmitirSaldo.Enabled:= False;
-  BtnDeposito.Enabled:= False;
-  BtnSaque.Enabled:= False;
-end;
-
 procedure TMainForm.BtnEmitirSaldoClick(Sender: TObject);
-// Inserir if else para opções de conta e reorganizar distribuição dos procedimentos abaixo
 var
   LSaldoDaPoupanca: currency;
   LSaldoDaCorrente: currency;
@@ -87,36 +117,59 @@ const
   CONCORRTEXT = 'Saldo da Conta Corrente: ';
   CONPOUPTEXT = 'Saldo da Conta Poupança: ';
 begin
-  Memo1.Lines.Delete(2); Memo1.Lines.Delete(1);
   LSaldoDaCorrente:= ContaCorrente.ConsultaSaldo;
   LSaldoDaPoupanca:= ContaPoupanca.ConsultaSaldo;
-  Memo1.Lines.Insert(1,CONCORRTEXT + CurrToStr(LSaldoDaCorrente));
-  Memo1.Lines.Insert(2,CONPOUPTEXT + CurrToStr(LSaldoDaPoupanca));
-  Memo1.Lines.Add('TConta: ' + CurrToStr(Conta.ConsultaSaldo));
+  MemoInfoPanel.lines.Delete(1);
+  case TipoConta of
+  Corrente: MemoInfoPanel.Lines.Add(CONCORRTEXT + Format('%m', [LSaldoDaCorrente]));
+  Poupanca: MemoInfoPanel.Lines.Add(CONPOUPTEXT + Format('%m', [LSaldoDaPoupanca]));
+  else MemoInfoPanel.Lines.Add('Erro');
+  end;
 end;
 
 procedure TMainForm.BtnDepositoClick(Sender: TObject);
-const
-  PARPOUP = 'O valor do depósito não pode ser menor que R$ 200,00';
+var
+  MsgErro: string;
+  Valor: currency;
 begin
-  EditQuantia.Visible:= True;
-  LabelInstrucao.Visible:= True;
-  Conta.Deposito(500);
+  OperationOpen(OP_DEPOSITO);
+  Valor:= Operacao.OpValor;
+  case TipoConta of
+  Corrente: ContaCorrente.Deposito(Valor, MsgErro);
+  Poupanca:
+    begin
+    if not ContaPoupanca.Deposito(Valor, MsgErro) then
+      Raise Exception.Create(MsgErro)
+    end;
+  end;
+  MemoInfoPanel.Lines.Delete(1);
 end;
 
-procedure TMainForm.EditQuantiaEnter(Sender: TObject);
+procedure TMainForm.BtnSaqueClick(Sender: TObject);
 var
-  Quantia: currency;
+  MsgErro: string;
+  Valor: currency;
+  LimiteSaqueCorr: currency;
 begin
-  Quantia:= StrToCurr(EditQuantia.Text);
-  if CmbBoxTipoConta.ItemIndex = 0 then
+  case TipoConta of
+  Corrente:
     begin
-      //Result:= Quantia;
-    end
-  else
-    begin
-      //Result:= Quantia;
+    MessageDlg('É cobrada uma taxa de 1% sobre o valor sacado.',TMsgDlgType.mtWarning,[mbok],0);
+    LimiteSaqueCorr:= ContaCorrente.ConsultaSaldo * 0.99;
+    OperationOpen(OP_Saque, LimiteSaqueCorr);
+    Valor:= Operacao.OpValor;
+    if not ContaCorrente.Saque(Valor, MsgErro) then
+      Raise Exception.Create(MsgErro)
     end;
+  Poupanca:
+    begin
+    OperationOpen(OP_Saque, ContaPoupanca.ConsultaSaldo);
+    Valor:= Operacao.OpValor;
+    if not ContaPoupanca.Saque(Valor, MsgErro) then
+      Raise Exception.Create(MsgErro)
+    end;
+  end;
+  MemoInfoPanel.Lines.Delete(1);
 end;
 
 end.

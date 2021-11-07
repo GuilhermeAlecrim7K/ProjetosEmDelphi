@@ -1,97 +1,158 @@
 unit MinhasClasses;
 
+{
+Crie uma classe Conta que possua métodos públicos (virtual) para
+as operações de saque, depósito e consulta de saldo. Em seguida
+crie outras duas classes, ContaCorrente e ContaPoupanca que herdam
+da classe Conta.
+
+Sobrescreva (override) o método de saque da classe
+ContaCorrente pois deverá adicionalmente realizar um desconto de
+imposto no saldo referente a 1% do valor sacado toda vez que um
+saque for realizado. O limite de saque da classe ContaCorrente é
+de 1000 reais por operação.
+
+Para a classe ContaPoupanca sobrescreva
+(override) o método de saque não permitindo realizar nenhum tipo de
+desconto de imposto na operação de saque, no entanto o limite de
+saque será de apenas 500 reais por operação. Na classe ContaPoupanca
+sobrescreva (override) a operação de depósito permitindo somente
+operações com valores superiores à 200 reais.
+}
+
 interface
 
 type
-  TConta = class
-  private
+  IConta = interface ['{F89EC647-B7DF-42AB-AC19-A75ADD9EC9FD}']
+    function Saque(Valor: currency; out Msg: string): boolean;
+    function Deposito(Valor: currency; out Msg: string): boolean;
+    function ConsultaSaldo: currency;
+  end;
+
+  TContaCorrente = class(TInterfacedObject, IConta)
+  strict private
     FNomeTitular: string;
-    FSaldoDaConta: currency;
+    FSaldoConta: currency;
   public
-    property NomeTitular: string read FNomeTitular write FNomeTitular;
-    function Saque(Valor: currency): currency; virtual;
-    function Deposito(Valor: currency): currency; virtual;
-    function ConsultaSaldo: currency; virtual;
+    constructor Create;
+    property NomeTitular: string read FNomeTitular;
+    function Saque(Valor: currency; out Msg: string): boolean;
+    function Deposito(Valor: currency; out Msg: string): boolean;
+    function ConsultaSaldo: currency;
   end;
 
-  TContaCorrente = class(TConta)
-  public
-    function Saque(Valor: currency): currency; override;
-    function Deposito(Valor: currency): currency; override;
-    function ConsultaSaldo: currency; override;
-  end;
-
-  TContaPoupanca = class(TConta)
+  TContaPoupanca = class(TInterfacedObject, IConta)
+    strict private
+      FNomeTitular: string;
+      FSaldoConta: currency;
     public
-      function Saque(Valor: currency): currency; override;
-      function Deposito(Valor: currency): currency; override;
-      function ConsultaSaldo: currency; override;
+      constructor Create;
+      property NomeTitular: string read FNomeTitular;
+      function Saque(Valor: currency; out Msg: string): boolean;
+      function Deposito(Valor: currency; out Msg: string): boolean;
+      function ConsultaSaldo: currency;
   end;
 
 implementation
 
-{ TConta }
-
-function TConta.ConsultaSaldo: currency;
-begin
-  Result:= FSaldoDaConta;
-end;
-
-function TConta.Deposito(Valor: currency): currency;
-begin
-  FSaldoDaConta:= FSaldoDaConta + Valor;
-  Result:= FSaldoDaConta;
-end;
-
-function TConta.Saque(Valor: currency): currency;
-begin
-  FSaldoDaConta:= FSaldoDaConta - Valor;
-  Result:= FSaldoDaConta;
-end;
-
 { TContaCorrente }
+
+constructor TContaCorrente.Create;
+begin
+  FNomeTitular:= 'Guilherme Ferreira Alecrim';
+  FSaldoConta:= 1000;
+end;
 
 function TContaCorrente.ConsultaSaldo: currency;
 begin
-  Result:= FSaldoDaConta; //Criar variável saldo da conta para TContaCorrente
+  Result:= FSaldoConta;
 end;
 
-function TContaCorrente.Deposito(Valor: currency): currency;
+function TContaCorrente.Deposito(Valor: currency; out Msg: string): boolean;
 begin
-  //Colocar para herdar
+  FSaldoConta:= FSaldoConta + Valor;
+  Result:= True;
 end;
 
-function TContaCorrente.Saque(Valor: currency): currency;
+function TContaCorrente.Saque(Valor: currency; out Msg: string): boolean;
+var
+  IsWithinLimite, IsWithinSaldo: boolean;
+const
+  MSG_RETORNO_FALSE = 'A operação não pôde ser realizada. ';
+  MSG_ABOVE_LIMITE = 'O limite para saques nesta modalidade é de R$ 1.000,00 por operação.';
+  MSG_SALDO_INSUFICIENTE = 'Saldo insuficiente.';
 begin
-    if (Valor<1000) and (FSaldoDaConta - (Valor * 0.99) > 0) then
+  IsWithinLimite:= Valor <= 1000;
+  IsWithinSaldo:= FSaldoConta - (Valor * 1.01) >= 0;
+  if IsWithinLimite and IsWithinSaldo then
     begin
-      FSaldoDaConta:= FSaldoDaConta - (Valor * 0.99);
+      FSaldoConta:= FSaldoConta - (Valor * 1.01);
+      Result:= True;
+    end
+  else
+    begin
+      Result:= False;
+      Msg:= MSG_RETORNO_FALSE;
+      if not IsWithinLimite then
+        Msg:= Msg + MSG_ABOVE_LIMITE
+      else
+        Msg:= Msg + MSG_SALDO_INSUFICIENTE;
     end;
 end;
 
 { TContaPoupanca }
 
-function TContaPoupanca.ConsultaSaldo: currency;
+constructor TContaPoupanca.Create;
 begin
-
+  FNomeTitular:= 'Guilherme Ferreira Alecrim';
+  FSaldoConta:= 500;
 end;
 
-function TContaPoupanca.Deposito(Valor: currency): currency;
+function TContaPoupanca.ConsultaSaldo: currency;
 begin
-  if Valor>200 then
+  Result:= FSaldoConta;
+end;
+
+function TContaPoupanca.Deposito(Valor: currency; out Msg: string): boolean;
+const
+  MSG_RETORNO_FALSE = 'A operação não foi realizada. O limite mínimo para depósito é de R$ 200,00 por operação.';
+begin
+  if Valor>=200 then
     begin
-      FSaldoDaConta:= FSaldoDaConta + Valor;
-      Result:= FSaldoDaConta;
+      FSaldoConta:= FSaldoConta + Valor;
+      Result:= True;
+    end
+  else
+    begin
+      Msg:= MSG_RETORNO_FALSE;
+      Result:= False;
     end;
 end;
 
-function TContaPoupanca.Saque(Valor: currency): currency;
+function TContaPoupanca.Saque(Valor: currency; out Msg: string): boolean;
+var
+  IsWithinLimite, IsWithinSaldo: boolean;
+const
+  MSG_RETORNO_FALSE = 'A operação não pôde ser realizada. ';
+  MSG_ABOVE_LIMITE = 'O limite para saques nesta modalidade é de R$ 500,00 por operação.';
+  MSG_SALDO_INSUFICIENTE = 'Saldo insuficiente.';
 begin
-  if (Valor<500) and (FSaldoDaConta - Valor > 0) then
-  begin
-    FSaldoDaConta:= FSaldodaConta - Valor;
-  end
-
+  IsWithinLimite:= Valor<=500;
+  IsWithinSaldo:= FSaldoConta - Valor >= 0;
+  if IsWithinLimite and IsWithinSaldo then
+    begin
+      FSaldoConta:= FSaldoConta - Valor;
+      Result:= True;
+    end
+  else
+    begin
+      Result:= False;
+      Msg:= MSG_RETORNO_FALSE;
+      if not IsWithinLimite then
+        Msg:= Msg + MSG_ABOVE_LIMITE
+      else
+        Msg:= Msg + MSG_SALDO_INSUFICIENTE;
+    end;
 end;
 
 end.
