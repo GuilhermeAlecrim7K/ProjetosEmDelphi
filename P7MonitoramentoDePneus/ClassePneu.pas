@@ -7,7 +7,8 @@ TVidaPneu = class
 private
   FQuilometragem: integer;
 public
-  function ReadQuilometragem : integer;
+  constructor Create;
+  function ReadQuilometragem : integer; virtual;
   function WriteQuilometragem(Km: integer; out msg: string): boolean; virtual;
 end;
 
@@ -17,16 +18,18 @@ private
   FLimiteRodagem: integer;
   FQtdVidas: integer;
   FKmRestante: integer;
-  FKmTotal: integer;
+	FVidasPneu: array of TVidaPneu;
 public
   constructor create;
-  property IdPneu: string read FIdPneu;
-  property LimiteRodagem: integer read FLimiteRodagem write FLimiteRodagem;
-  function ReadQtdVidas: integer;
+	destructor Destroy; override;
+  function ReadNumVidaAtual: integer;
+	procedure AddVida;
   function KmRestanteVidaAtual: integer;
   function KmTotalPercorrido: integer;
+  function ReadQuilometragem : integer; override;
   function WriteQuilometragem(Km: integer; out msg: string): boolean; override;
-
+  property IdPneu: string read FIdPneu;
+  property LimiteRodagem: integer read FLimiteRodagem write FLimiteRodagem;
 end;
 
 implementation
@@ -34,6 +37,11 @@ implementation
 uses SysUtils;
 
 { TVidaPneu }
+
+constructor TVidaPneu.Create;
+begin
+  FQuilometragem:= 0;
+end;
 
 function TVidaPneu.ReadQuilometragem: integer;
 begin
@@ -50,15 +58,38 @@ end;
 
 constructor TPneu.create;
 begin
-  FIdPneu:= IntToStr(Random(99999999));
+  FIdPneu:= Format('%.8d', [Random(99999999)]);
   FQtdVidas:= 5;
   FLimiteRodagem:= 5000;
-  FKmTotal:= 0;
+	SetLength(FVidasPneu, 1);
+	FVidasPneu[0]:= TVidaPneu.Create;
 end;
 
-function TPneu.ReadQtdVidas: integer;
+destructor TPneu.destroy;
+var
+  I: integer;
 begin
-  Result:= FQtdVidas;
+	for I:= 0 to (length(FVidasPneu)-1) do
+		FreeAndNil(FVidasPneu[I]);
+end;
+
+function TPneu.ReadNumVidaAtual: integer;
+begin
+  Result:= length(FVidasPneu);
+end;
+
+function TPneu.ReadQuilometragem: integer;
+begin
+  Result:= FVidasPneu[ReadNumVidaAtual - 1].ReadQuilometragem;
+end;
+
+procedure TPneu.AddVida;
+begin
+	If ReadNumVidaAtual <= FQtdVidas then
+	begin
+		SetLength(FVidasPneu, ReadNumVidaAtual +1);
+		FVidasPneu[ReadNumVidaAtual - 1]:= TVidaPneu.Create;
+	end;
 end;
 
 function TPneu.KmRestanteVidaAtual: integer;
@@ -68,32 +99,33 @@ begin
 end;
 
 function TPneu.KmTotalPercorrido: integer;
+var
+  I: integer;
+  KmTotal: integer;
 begin
-  Result:= FKmTotal;
+  KmTotal:= 0;
+  for I:= 0 to ReadNumVidaAtual-1 do
+    KmTotal:= KmTotal + FVidasPneu[I].FQuilometragem;
+  Result:= KmTotal;
 end;
 
 function TPneu.WriteQuilometragem(Km: integer; out msg: string): boolean;
-const
-  MSG_ERRO = 'Este pneu não pode ser mais recapeado e chegou ao fim de sua vida.';
 begin
-  inherited;
-  FKmTotal:= FKmTotal + Km;
-  if (FQuilometragem >= FLimiteRodagem) then
+  FVidasPneu[ReadNumVidaAtual-1].WriteQuilometragem(Km, msg);
+  Result:= True;
+  if (FVidasPneu[ReadNumVidaAtual-1].FQuilometragem >= FLimiteRodagem) then
     begin
-      if (FQtdVidas>0) then
+      if (ReadNumVidaAtual <= FQtdVidas) then
         begin
-        FQtdVidas:= FQtdVidas -1;
-        FQuilometragem:= 0;
-        Result:= True;
+				AddVida;
         end
       else
         begin
-        msg:= MSG_ERRO;
-        FQuilometragem:= FQuilometragem - Km; //Desfazendo o procedimento herdado caso não haja mais vidas e FQuilometragem fique acima de 5000;
-        FKmTotal:= FKmTotal - Km;
+        msg:= Format('Este pneu não pode ser mais recapeado e chegou ao fim de sua vida. Sua vida útil já foi ultrapassada em %d km. Trocar imediatamente', [FVidasPneu[ReadNumVidaAtual-1].ReadQuilometragem - FLimiteRodagem]);;
         Result:= False;
         end;
     end
 end;
 
 end.
+

@@ -54,7 +54,7 @@ begin
     NewLine;
     Memo1.Lines.Add('- N° Identificador do pneu: ' + Michelin.IdPneu);
     Memo1.Lines.Add('- Leitura do Limite de Rodagem do Pneu: ' + IntToStr(Michelin.LimiteRodagem));
-    Memo1.Lines.Add('- Quantidade de Vidas do Pneu: ' + IntToStr(Michelin.ReadQtdVidas));
+    Memo1.Lines.Add('- Número da Vida Atual do Pneu: ' + IntToStr(Michelin.ReadNumVidaAtual));
     Memo1.Lines.Add('- Quilometragem Total Percorrida: ' + IntToStr(Michelin.KmTotalPercorrido));
   finally
     FreeAndNil(Michelin)
@@ -64,17 +64,19 @@ end;
 procedure TForm1.BtnTeste2Click(Sender: TObject);
 var
   Pirelli: TPneu;
+  KmTeste: integer;
 const
   MSG_TESTE2 = 'Este teste irá trabalhar, de forma simples, com os dados editáveis do objeto. Criação, atribuição de valores a propriedades com write e métodos da classe. Além de fornecer alguns outros dados do objeto que não foram consultados no teste 1.';
 begin
   Pirelli:= TPneu.Create;
   Memo1.Lines.Clear;
   Memo1.Lines.Add(MSG_TESTE2);
+  KmTeste:= Random(1500);
   try
     NewLine;
-    Memo1.Lines.Add('Adicionando 768 km de rodagem ao pneu...');
+    Memo1.Lines.Add(Format('Adicionando %d km de rodagem ao pneu...', [KmTeste]));
     Newline;
-    Pirelli.WriteQuilometragem(768,msg);
+    Pirelli.WriteQuilometragem(KmTeste,msg);
     Memo1.Lines.Add('- Quilômetro rodados da vida atual: ' + IntToStr(Pirelli.ReadQuilometragem));
     Pirelli.LimiteRodagem:= 1500;
     Memo1.Lines.Add('- Alterado o limite de Rodagem do Pneu para 1500 km: ' + IntToStr(Pirelli.LimiteRodagem));
@@ -99,7 +101,7 @@ begin
     NewLine;
     Continental.WriteQuilometragem(5000,msg);
     Memo1.Lines.Add('- Quilômetro rodados da vida atual: ' + IntToStr(Continental.ReadQuilometragem));
-    Memo1.Lines.Add('- Quantidade de Vidas do Pneu: ' + IntToStr(Continental.ReadQtdVidas));
+    Memo1.Lines.Add('- Número da Vida Atual do Pneu: ' + IntToStr(Continental.ReadNumVidaAtual));
     Memo1.Lines.Add('- Quilometros restantes da vida atual: ' + IntToStr(Continental.KmRestanteVidaAtual));
     Memo1.Lines.Add('- Quilometragem Total Percorrida: ' + IntToStr(Continental.KmTotalPercorrido));
   finally
@@ -131,7 +133,7 @@ begin
       Memo1.Lines.Add('Adicionando 3600 km de rodagem ao pneu...');
       Goodyear.WriteQuilometragem(3600,msg);
       Memo1.Lines.Add('- Quilometragem Total Percorrida: ' + IntToStr(Goodyear.KmTotalPercorrido));
-      Memo1.Lines.Add('- Vidas restantes: ' + IntToStr(Goodyear.ReadQtdVidas));
+      Memo1.Lines.Add('- Vida Atual: ' + IntToStr(Goodyear.ReadNumVidaAtual));
       NewLine;
     end;
   finally
@@ -144,7 +146,7 @@ var
   Bridgestone: TPneu;
   AL: byte;
 const
-  ArrayLoop: array [0..5] of byte = (0,1,2,3,4,5);
+  ArrayLoop: array [0..6] of byte = (0,1,2,3,4,5,6);
 const
   MSG_TESTE5 = 'O último teste trabalha até o fim da vida do pneu. Serão feito os 5 recapeamentos possíveis e uma tentativa de registro de nova quilometragem com o objetivo de testar o resultado após esgotadas as vidas do pneu.';
 begin
@@ -162,15 +164,17 @@ begin
       if (Bridgestone.WriteQuilometragem(1100,msg)) then
         begin
           Memo1.Lines.Add('- Quilometragem Total Percorrida: ' + IntToStr(Bridgestone.KmTotalPercorrido));
-          Memo1.Lines.Add('- Vidas restantes: ' + IntToStr(Bridgestone.ReadQtdVidas));
+          Memo1.Lines.Add('- Vida Atual: ' + IntToStr(Bridgestone.ReadNumVidaAtual));
         end
       else
         begin
           Memo1.Lines.Add(msg);
           Memo1.Lines.Add('- Quilometragem Total Percorrida: ' + IntToStr(Bridgestone.KmTotalPercorrido));
-          Memo1.Lines.Add('- Vidas restantes: ' + IntToStr(Bridgestone.ReadQtdVidas));
+          Memo1.Lines.Add('- Vida Atual: ' + IntToStr(Bridgestone.ReadNumVidaAtual));
         end;
     end;
+    NewLine;
+    Memo1.Lines.Add('Como o pneu pode ser recapeado 5 vezes, ele tem 6 vidas. O algoritmo continuará registrando as entradas de quilometragem na última vida mas não aceitará recapeamento.')
   finally
     FreeAndNil(Bridgestone)
   end;
