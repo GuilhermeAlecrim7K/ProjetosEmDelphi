@@ -50,7 +50,7 @@ object Form1: TForm1
     ParentFont = False
     ParentShowHint = False
     ShowHint = False
-    TabOrder = 1
+    TabOrder = 2
     TextHint = 'select a date'
   end
   object RadGrpIsFeriado: TRadioGroup
@@ -63,7 +63,7 @@ object Form1: TForm1
     Items.Strings = (
       'Sim'
       'N'#227'o')
-    TabOrder = 2
+    TabOrder = 3
   end
   object BtnRegistraHoraExtra: TButton
     Left = 247
@@ -71,7 +71,7 @@ object Form1: TForm1
     Width = 75
     Height = 25
     Caption = 'Registrar'
-    TabOrder = 3
+    TabOrder = 4
     OnClick = BtnRegistraHoraExtraClick
   end
   object CmbBoxQtdeHoras: TComboBox
@@ -81,7 +81,7 @@ object Form1: TForm1
     Height = 22
     Style = csOwnerDrawFixed
     ItemIndex = 0
-    TabOrder = 0
+    TabOrder = 1
     Text = '1'
     Items.Strings = (
       '1'
@@ -97,7 +97,7 @@ object Form1: TForm1
     Height = 21
     EditMask = '!0000;0;_'
     MaxLength = 4
-    TabOrder = 4
+    TabOrder = 0
     Text = ''
   end
   object MainMenu1: TMainMenu

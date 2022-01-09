@@ -69,3 +69,7 @@ __recovery/
 modules/
 *.identcache
 *.dsk
+
+
+#Later inclusions
+*.zip

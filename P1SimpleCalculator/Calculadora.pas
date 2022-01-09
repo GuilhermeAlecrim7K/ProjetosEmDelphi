@@ -4,8 +4,11 @@ interface
 
 {
 To do list
-- Substituir operação se não tiver nenhum número digitado
 - menu do histórico (outro form com iteração no array history incluindo cada linha?)
+- Criar classe calculadora em outra unit e passar os métodos e propriedades para lá.
+  - o limite de caracteres deve ser feito no form
+  - utilizar duas strings para guardar os valores para history
+- Possibilitar o uso do teclado para digitar os números
 }
 
 uses
@@ -163,8 +166,6 @@ begin
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
-var
-  StringInit: string;
 begin
   SetLength(History, 0);
   MemPainel.Lines.Clear;
