@@ -107,6 +107,7 @@ object Form1: TForm1
     Height = 227
     Align = alBottom
     TabOrder = 5
+    ExplicitLeft = 8
   end
   object MainMenu1: TMainMenu
     Left = 272

@@ -10,7 +10,27 @@ type
   TConclusionReport = (NewEmployeeCreated, NewRegisterCreated, RegisterUpdated, RegisterUpdatedWithHoliday, OvertimeExceeded);
   TDiasDaSemana = (Segunda=1, Terca, Quarta, Quinta, Sexta, Sabado, Domingo);
 
-  TRegistroHorasExtras = class
+  TRegistroHorasExtras = class;
+  TFuncionario = class;
+
+  IRegistroHorasExtras = interface
+    procedure UpdateRegistro (ARegistro: TRegistroHorasExtras);
+    function GetValorDoDia: currency;
+  end;
+
+  IListaRegistroHorasExtras = interface
+    function CriarNovoRegistro(ARegistro: TRegistroHorasExtras): TConclusionReport;
+    procedure GerarRelatorioIndividual(AMsg: TStringList);
+    function GetValorTotal: currency;
+  end;
+
+  IListaFuncionarios = interface
+    function BuscaFuncionario (ACodigo: integer): integer;
+    function CriaRegistroFuncionario (AFuncionario: TFuncionario): TConclusionReport;
+    procedure GerarRelatorioLista (out AMsg: TStringList);
+  end;
+
+  TRegistroHorasExtras = class (TInterfacedObject, IRegistroHorasExtras)
   public
     const VALOR_HORA_EXTRA = 20;
     const VALOR_ACRESCIMO_REGULAR = 1.5;
@@ -34,7 +54,7 @@ type
     function GetValorDoDia: currency;
   end;
 
-  TListaRegistroHorasExtras = class
+  TListaRegistroHorasExtras = class (TInterfacedObject, IListaRegistroHorasExtras)
   strict private
     FLista: TObjectList<TRegistroHorasExtras>;
     function Buscar(AData: TDateTime): integer;
@@ -50,15 +70,15 @@ type
   TFuncionario = class
   strict private
     FCodigo: integer;
-    FRegistrosHorasExtras: TListaRegistroHorasExtras;
+    FRegistrosHorasExtras: IListaRegistroHorasExtras;
   public
     constructor Create(ACodigo: integer; ARegistro: TRegistroHorasExtras);
     destructor Destroy; override;
     property Codigo: integer read FCodigo;
-    property RegistrosHorasExtras: TListaRegistroHorasExtras read FRegistrosHorasExtras;
+    property RegistrosHorasExtras: IListaRegistroHorasExtras read FRegistrosHorasExtras;
   end;
 
-  TListaFuncionarios = class sealed
+  TListaFuncionarios = class sealed (TInterfacedObject, IListaFuncionarios)
   strict private
     FLista: TObjectList<TFuncionario>;
   public
@@ -181,7 +201,7 @@ end;
 
 destructor TListaRegistroHorasExtras.Destroy;
 begin
-  //FLista.Free;
+  FLista.Free;
   inherited;
 end;
 
@@ -227,7 +247,7 @@ end;
 
 destructor TFuncionario.Destroy;
 begin
-  FRegistrosHorasExtras.Free;
+//  FRegistrosHorasExtras.Free;
   inherited;
 end;
 
@@ -258,6 +278,7 @@ end;
 
 constructor TListaFuncionarios.Create;
 begin
+  FLista:= nil;
   FLista:= TObjectList<TFuncionario>.Create;
 end;
 
