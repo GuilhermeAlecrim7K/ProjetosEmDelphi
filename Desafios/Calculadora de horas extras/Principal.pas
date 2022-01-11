@@ -5,7 +5,7 @@ interface
 uses
   Objetos, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXCalendars, Vcl.Menus,
-  Vcl.Mask, FrmRelatorios, StrUtils;
+  Vcl.Mask, FrmRelatorios, StrUtils, Vcl.ComCtrls;
 
 type
   TForm1 = class(TForm)
@@ -18,13 +18,14 @@ type
     MskEdtCodigoFuncionario: TMaskEdit;
     MenuRelatorios: TMenuItem;
     SubMenuGerarRelatorios: TMenuItem;
+    PageControl1: TPageControl;
     procedure BtnRegistraHoraExtraClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SubMenuGerarRelatoriosClick(Sender: TObject);
   strict private
     { Private declarations }
-    ListaFuncionarios: TListaFuncionarios;
+    Funcionarios: TListaFuncionarios;
   public
     { Public declarations }
   end;
@@ -39,41 +40,55 @@ implementation
 procedure TForm1.BtnRegistraHoraExtraClick(Sender: TObject);
 var
   vCodigoFuncionario: integer;
-  vRegistro: RRegistroHoras;
+  vData: TDateTime;
+  vQtdeHoras: byte;
+  vIsFeriado: boolean;
+  vFuncionario: TFuncionario;
+  vRegistroHorasExtras: TRegistroHorasExtras;
 begin
+  vFuncionario:= nil;
+  vRegistroHorasExtras:= nil;
   vCodigoFuncionario:= StrToInt(MskEdtCodigoFuncionario.Text);
-  vRegistro.QtdeHoras:= CmbBoxQtdeHoras.ItemIndex +1;
-  vRegistro.Data:= CldData.Date;
-  vRegistro.IsFeriado:= not ((RadGrpIsFeriado.ItemIndex).ToBoolean);
-  case CriaRegistroFuncionario(vCodigoFuncionario, vRegistro, ListaFuncionarios) of
-    NewEmployeeCreated:
-      ShowMessage ('Novo funcionário registrado');//ShowMessage(Format(EConclusionMessage[NewEmployeeCreated], [vCodigoFuncionario]));
-    NewRegisterCreated:
-      ShowMessage ('Novo registro para o funcionário criado');//ShowMessage(Format(EConclusionMessage[NewRegisterCreated], [vCodigoFuncionario]));
-    RegisterUpdated:
-      ShowMessage ('Registro da data incrementado com sucesso.');//ShowMessage(Format(EConclusionMessage[RegisterUpdated], [vRegistro.QtdeHoras]));
-    RegisterUpdatedWithHoliday:
-      ShowMessage ('Registro da data incrementado com sucesso. Alterado o tipo de data');//ShowMessage(Format(EConclusionMessage[RegisterUpdatedWithHoliday], [vRegistro.QtdeHoras, IfThen(vRegistro.IsFeriado, 'Data útil para feriado' , 'feriado para Data útil')]));
-    OvertimeExceeded:
-      ShowMessage ('Limite de horas extras no dia atingidas. Não foi possível realizar a operação');//ShowMessage(Format(EConclusionMessage[OvertimeExceeded], [vCodigoFuncionario]));
+  vQtdeHoras:= CmbBoxQtdeHoras.ItemIndex +1;
+  vData:= CldData.Date;
+  vIsFeriado:= not ((RadGrpIsFeriado.ItemIndex).ToBoolean);
+  try
+    vRegistroHorasExtras:= TRegistroHorasExtras.Create(vData, vQtdeHoras, vIsFeriado);
+    vFuncionario:= TFuncionario.Create(vCodigoFuncionario, vRegistroHorasExtras);
+    case Funcionarios.CriaRegistroFuncionario(vFuncionario) of
+      NewEmployeeCreated:
+        ShowMessage ('Novo funcionário registrado');
+      NewRegisterCreated:
+        ShowMessage ('Novo registro para o funcionário criado');
+      RegisterUpdated:
+        ShowMessage ('Registro da data incrementado com sucesso.');
+      RegisterUpdatedWithHoliday:
+        ShowMessage ('Registro da data incrementado com sucesso. Alterado o tipo de data');
+      OvertimeExceeded:
+        ShowMessage ('Limite de horas extras no dia atingidas. Não foi possível realizar a operação');
+    end;
+  finally
+    vRegistroHorasExtras.Free;
+    vFuncionario.Free;
   end;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-ListaFuncionarios.Free;
+  //Funcionarios.Free;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ListaFuncionarios:= TListaFuncionarios.Create;
+  Funcionarios:= nil;
+  Funcionarios:= TListaFuncionarios.Create;
   CldData.Date:= Date;
 end;
 
 procedure TForm1.SubMenuGerarRelatoriosClick(Sender: TObject);
 begin
   FormRelatorios:= TFormRelatorios.Create(Self);
-  FormRelatorios.ListaFuncionarios:= ListaFuncionarios;
+  FormRelatorios.ListaFuncionarios:= Funcionarios;
   FormRelatorios.ShowModal;
 end;
 

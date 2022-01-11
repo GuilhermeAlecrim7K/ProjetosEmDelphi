@@ -26,22 +26,22 @@ implementation
 {$R *.dfm}
 
 procedure TFormRelatorios.BtnGerarRelatorioClick(Sender: TObject);
-var
+{var
   Funcionario: TFuncionario;
   ValorIndividual, ValorTotal: currency;
-  Msg: string;
+  Msg: string;}
 begin
-  Memo1.Lines.Clear;
+  {Memo1.Lines.Clear;
   ValorTotal:= 0;
-  if ListaFuncionarios.Count<1 then
+  if ListaFuncionarios.Lista.Count<1 then
     Memo1.Lines.Add('Não há nenhum registro');
-  for Funcionario in ListaFuncionarios do
+  for Funcionario in ListaFuncionarios.Lista do
     begin
-      ValorIndividual:= GerarRelatorio(Funcionario, msg);
+      ValorIndividual:= ListaFuncionarios.GerarRelatorio(Funcionario, msg);
       Memo1.Lines.Add(Format(Msg, [Funcionario.Codigo, ValorIndividual]));
       ValorTotal:= ValorTotal + ValorIndividual;
     end;
-  Memo1.Lines.Add(Format('Valor Total a ser pago: %m', [ValorTotal]));
+  Memo1.Lines.Add(Format('Valor Total a ser pago: %m', [ValorTotal]));}
 end;
 
 end.

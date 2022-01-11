@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 147
-  ClientWidth = 332
+  ClientHeight = 371
+  ClientWidth = 339
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -99,6 +99,14 @@ object Form1: TForm1
     MaxLength = 4
     TabOrder = 0
     Text = ''
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 144
+    Width = 339
+    Height = 227
+    Align = alBottom
+    TabOrder = 5
   end
   object MainMenu1: TMainMenu
     Left = 272
