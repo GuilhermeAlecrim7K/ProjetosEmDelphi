@@ -13,7 +13,7 @@ type
   RRegistroHoras = record
     Data: TDateTime;
     QtdeHoras: byte;
-    IsFeriado: boolean;
+    IsFeriadoOrDomingo: boolean;
   end;
 
   TFuncionario = class
@@ -40,13 +40,7 @@ const
   ValorAcrescimoRegular = 1.5;
   ValorAcrescimoFeriadoOuDomingo = 2.0;
   NotFound = -1;
-  {EConclusionMessage: array [EConclusion] of string = (
-    'Novo registro criado''#13''#10''Código do funcionário: %6.d',
-    'Novo registro criado para o funcionário de código %d',
-    'Registro do funcionário do dia atualizado para %d horas',
-    'Registro do funcionário do dia atualizado para %d horas''#13''#10''Obs: Alterado de %s', // Data útil ou Feriado
-    'Não foi possível atualizar o registro. O funcionário já possui %d horas registradas nesta data. Limite: 5 horas');
-   }
+
 implementation
 
 function BuscaFuncionario (ACodigo: integer; ListaFuncionarios: TListaFuncionarios): integer;
@@ -154,7 +148,7 @@ begin
     begin
       if (FRegistroDeHoras[ResultadoBusca].QtdeHoras + ARegistro.QtdeHoras < 5) then
         begin
-          if (FRegistroDeHoras[ResultadoBusca].IsFeriado = ARegistro.IsFeriado) then
+          if (FRegistroDeHoras[ResultadoBusca].IsFeriadoOrDomingo = ARegistro.IsFeriadoOrDomingo) then
             begin
             FRegistroDeHoras[ResultadoBusca].QtdeHoras := FRegistroDeHoras[ResultadoBusca].QtdeHoras + ARegistro.QtdeHoras;
             Result:= RegisterUpdated;
@@ -182,7 +176,7 @@ begin
   Result:= 0;
   for vRegistro in AFuncionario.FRegistroDeHoras do
     begin
-      if vRegistro.IsFeriado or (DayOfTheWeek(vRegistro.Data) = Ord(Domingo)) then
+      if vRegistro.IsFeriadoOrDomingo or (DayOfTheWeek(vRegistro.Data) = Ord(Domingo)) then
         vValor:= ValorHoraExtra * ValorAcrescimoFeriadoOuDomingo
       else
         vValor:= ValorHoraExtra * ValorAcrescimoRegular;

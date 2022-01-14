@@ -1,4 +1,4 @@
-unit FCriptografar;
+unit Criptografar;
 
 interface
 
@@ -13,7 +13,7 @@ function Criptografar (const Texto: string): string;
 var
   StrList: TStringList;
   TextoManipulado, temp: string;
-  ColNumber, I: byte;
+  ColNumber, I, J: byte;
 begin
   Result:= '';
   if Length(Texto) < 12 then
@@ -34,13 +34,10 @@ begin
       end;
     for I := 1 to 8 do
       begin
-        Result:= Result + StrList[0].Chars[I-1];
-        Result:= Result + StrList[1].Chars[I-1];
-        Result:= Result + StrList[2].Chars[I-1];
+        for J := 0 to ColNumber -1 do
+          Result:= Result + StrList[J].Chars[I-1];
       end;
   finally
     StrList.Free;
   end;
 end;
-
-end.

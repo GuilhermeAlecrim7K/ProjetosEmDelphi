@@ -44,18 +44,18 @@ begin
   vCodigoFuncionario:= StrToInt(MskEdtCodigoFuncionario.Text);
   vRegistro.QtdeHoras:= CmbBoxQtdeHoras.ItemIndex +1;
   vRegistro.Data:= CldData.Date;
-  vRegistro.IsFeriado:= not ((RadGrpIsFeriado.ItemIndex).ToBoolean);
+  vRegistro.IsFeriadoOrDomingo:= not ((RadGrpIsFeriado.ItemIndex).ToBoolean);
   case CriaRegistroFuncionario(vCodigoFuncionario, vRegistro, ListaFuncionarios) of
     NewEmployeeCreated:
-      ShowMessage ('Novo funcionário registrado');//ShowMessage(Format(EConclusionMessage[NewEmployeeCreated], [vCodigoFuncionario]));
+      ShowMessage ('Novo funcionário registrado');
     NewRegisterCreated:
-      ShowMessage ('Novo registro para o funcionário criado');//ShowMessage(Format(EConclusionMessage[NewRegisterCreated], [vCodigoFuncionario]));
+      ShowMessage ('Novo registro para o funcionário criado');
     RegisterUpdated:
-      ShowMessage ('Registro da data incrementado com sucesso.');//ShowMessage(Format(EConclusionMessage[RegisterUpdated], [vRegistro.QtdeHoras]));
+      ShowMessage ('Registro da data incrementado com sucesso.');
     RegisterUpdatedWithHoliday:
-      ShowMessage ('Registro da data incrementado com sucesso. Alterado o tipo de data');//ShowMessage(Format(EConclusionMessage[RegisterUpdatedWithHoliday], [vRegistro.QtdeHoras, IfThen(vRegistro.IsFeriado, 'Data útil para feriado' , 'feriado para Data útil')]));
+      ShowMessage ('Registro da data incrementado com sucesso. Alterado o tipo de data');
     OvertimeExceeded:
-      ShowMessage ('Limite de horas extras no dia atingidas. Não foi possível realizar a operação');//ShowMessage(Format(EConclusionMessage[OvertimeExceeded], [vCodigoFuncionario]));
+      ShowMessage ('Limite de horas extras no dia atingidas. Não foi possível realizar a operação');
   end;
 end;
 
