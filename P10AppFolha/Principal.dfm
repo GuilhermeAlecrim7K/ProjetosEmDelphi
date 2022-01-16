@@ -16,6 +16,7 @@ object FrmPrincipal: TFrmPrincipal
   OldCreateOrder = False
   Position = poDesigned
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignSize = (
     787
     511)
@@ -37,8 +38,6 @@ object FrmPrincipal: TFrmPrincipal
         Text = 'Data do dia'
         Width = 50
       end>
-    ExplicitLeft = -2
-    ExplicitTop = 484
   end
   object PgCtrInicio: TPageControl
     Left = 0
@@ -48,8 +47,6 @@ object FrmPrincipal: TFrmPrincipal
     ActivePage = TabResumoEmpresa
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 1
-    ExplicitWidth = 782
-    ExplicitHeight = 458
     object TabResumoEmpresa: TTabSheet
       Caption = 'Resumo da empresa'
     end
@@ -115,58 +112,72 @@ object FrmPrincipal: TFrmPrincipal
       Caption = 'Cadastros'
       object SubMenCadFuncionarios: TMenuItem
         Caption = 'Funcion'#225'rios'
+        OnClick = SubMenCadFuncionariosClick
       end
       object SubMenCadCargos: TMenuItem
         Caption = 'Cargos'
+        OnClick = SubMenCadCargosClick
       end
       object SubMenCadEventos: TMenuItem
         Caption = 'Eventos'
+        OnClick = SubMenCadEventosClick
       end
     end
     object MenuHeadLancamentos: TMenuItem
       Caption = 'Lan'#231'amentos'
       object SubMenLanMudancaDeCargo: TMenuItem
         Caption = 'Mudan'#231'a de cargo'
+        OnClick = SubMenLanMudancaDeCargoClick
       end
       object SubMenLanMudancaDeSalario: TMenuItem
         Caption = 'Mudan'#231'a de sal'#225'rio'
+        OnClick = SubMenLanMudancaDeSalarioClick
       end
       object SubMenLanEventos: TMenuItem
         Caption = 'Eventos'
+        OnClick = SubMenLanEventosClick
       end
     end
     object MenuHeadRelatorios: TMenuItem
       Caption = 'Relat'#243'rios'
       object SubMenRelListaDeCargos: TMenuItem
         Caption = 'Lista de Cargos'
+        OnClick = SubMenRelListaDeCargosClick
       end
       object SubMenRelListaDeFuncionarios: TMenuItem
         Caption = 'Lista de Funcion'#225'rios'
+        OnClick = SubMenRelListaDeFuncionariosClick
       end
       object SubMenRelEventos: TMenuItem
         Caption = 'Eventos'
+        OnClick = SubMenRelEventosClick
       end
       object N1: TMenuItem
         Caption = '-'
       end
       object SubMenRelINSS: TMenuItem
         Caption = 'INSS'
+        OnClick = SubMenRelINSSClick
       end
       object SubMenRelIRRF: TMenuItem
         Caption = 'IRRF'
+        OnClick = SubMenRelIRRFClick
       end
     end
     object MenuHeadFolhaDePagamento: TMenuItem
       Caption = 'Folha de Pagamento'
       object SubMenFolPagCalcular: TMenuItem
         Caption = 'Calcular Folha de Pagamento'
+        OnClick = SubMenFolPagCalcularClick
       end
       object SubMenFolPagFolhasAnteriores: TMenuItem
         Caption = 'Folhas anteriores'
+        OnClick = SubMenFolPagFolhasAnterioresClick
       end
     end
     object MenuHeadSair: TMenuItem
       Caption = 'Sair'
+      OnClick = MenuHeadSairClick
     end
   end
 end

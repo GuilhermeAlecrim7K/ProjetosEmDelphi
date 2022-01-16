@@ -108,6 +108,30 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Patterns\CalculosINSSeIRRF.pas"/>
+        <DCCReference Include="Forms\Cadastro\CadCargos.pas">
+            <Form>FrmCadastroCargos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Cadastro\CadFuncionarios.pas">
+            <Form>FrmCadastroFuncionarios</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Cadastro\CadEventos.pas">
+            <Form>FrmCadastroEventos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Lancamentos\LanMudancaSalario.pas">
+            <Form>FrmLancarMudancaDeSalario</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Lancamentos\LanEventos.pas">
+            <Form>FrmLancarEventos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Lancamentos\LanMudancaCargo.pas">
+            <Form>FrmLancarMudancaCargo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

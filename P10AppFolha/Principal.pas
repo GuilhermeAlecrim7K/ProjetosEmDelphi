@@ -3,9 +3,10 @@ unit Principal;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.Menus,
-  Vcl.Grids, Vcl.StdCtrls, CalculosINSSeIRRF, Conexao;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, System.UITypes, Vcl.Graphics,  Vcl.Controls,
+  Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.Menus, Vcl.Grids,
+  Vcl.StdCtrls, Conexao;
 
 type
   TFrmPrincipal = class(TForm)
@@ -39,6 +40,21 @@ type
     StrGrdTabelaIRRF: TStringGrid;
     procedure FormCreate(Sender: TObject);
     procedure SetINSSandIRRFTables;
+    procedure SubMenCadFuncionariosClick(Sender: TObject);
+    procedure SubMenCadCargosClick(Sender: TObject);
+    procedure SubMenCadEventosClick(Sender: TObject);
+    procedure SubMenLanMudancaDeCargoClick(Sender: TObject);
+    procedure SubMenLanMudancaDeSalarioClick(Sender: TObject);
+    procedure SubMenLanEventosClick(Sender: TObject);
+    procedure MenuHeadSairClick(Sender: TObject);
+    procedure SubMenRelListaDeCargosClick(Sender: TObject);
+    procedure SubMenRelListaDeFuncionariosClick(Sender: TObject);
+    procedure SubMenRelEventosClick(Sender: TObject);
+    procedure SubMenRelINSSClick(Sender: TObject);
+    procedure SubMenRelIRRFClick(Sender: TObject);
+    procedure SubMenFolPagCalcularClick(Sender: TObject);
+    procedure SubMenFolPagFolhasAnterioresClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -49,6 +65,10 @@ var
   FrmPrincipal: TFrmPrincipal;
 
 implementation
+
+uses
+  CalculosINSSeIRRF, CadCargos, CadEventos,
+  CadFuncionarios, LanEventos, LanMudancaSalario, LanMudancaCargo;
 
 {$R *.dfm}
 
@@ -62,6 +82,17 @@ begin
   //Em caso de falha conexão de rede criar um evento do TFDConnection
   //e chamar uma procedure para atualizar esse painel
   StatusBar1.Panels[1].Text:= DateTimeToStr(Date);
+end;
+
+procedure TFrmPrincipal.FormDestroy(Sender: TObject);
+begin
+  DM.Free;
+end;
+
+procedure TFrmPrincipal.MenuHeadSairClick(Sender: TObject);
+begin
+  if MessageDlg('Tem certeza que deseja abandonar a aplicação?', mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then
+    Application.Terminate;
 end;
 
 procedure TFrmPrincipal.SetINSSandIRRFTables;
@@ -102,6 +133,86 @@ begin
   StrGrdTabelaIRRF.Cells[2,4]:= Format('%m', [IRRF.DeducaoFaixa3]);
   StrGrdTabelaIRRF.Cells[2,5]:= Format('%m', [IRRF.DeducaoFaixa4]);
   StrGrdTabelaIRRF.Width:= StrGrdTabelaIRRF.ColWidths[0] + StrGrdTabelaIRRF.ColWidths[1] + StrGrdTabelaIRRF.ColWidths[2];
+end;
+
+procedure TFrmPrincipal.SubMenCadCargosClick(Sender: TObject);
+begin
+  FrmCadastroCargos:= TFrmCadastroCargos.Create(Self);
+  FrmCadastroCargos.ShowModal;
+  FrmCadastroCargos.Free;
+end;
+
+procedure TFrmPrincipal.SubMenCadEventosClick(Sender: TObject);
+begin
+  FrmCadastroEventos:= TFrmCadastroEventos.Create(Self);
+  FrmCadastroEventos.ShowModal;
+  FrmCadastroEventos.Free;
+end;
+
+procedure TFrmPrincipal.SubMenCadFuncionariosClick(Sender: TObject);
+begin
+  FrmCadastroFuncionarios:= TFrmCadastroFuncionarios.Create(Self);
+  FrmCadastroFuncionarios.ShowModal;
+  FrmCadastroFuncionarios.Free;
+end;
+
+procedure TFrmPrincipal.SubMenFolPagCalcularClick(Sender: TObject);
+begin
+  //...
+end;
+
+procedure TFrmPrincipal.SubMenFolPagFolhasAnterioresClick(
+  Sender: TObject);
+begin
+  //...
+end;
+
+procedure TFrmPrincipal.SubMenLanEventosClick(Sender: TObject);
+begin
+  FrmLancarEventos:= TFrmLancarEventos.Create(Self);
+  FrmLancarEventos.ShowModal;
+  FrmLancarEventos.Free;
+end;
+
+procedure TFrmPrincipal.SubMenLanMudancaDeCargoClick(Sender: TObject);
+begin
+  FrmLancarMudancaCargo:= TFrmLancarMudancaCargo.Create(Self);
+  FrmLancarMudancaCargo.ShowModal;
+  FrmLancarMudancaCargo.Free;
+end;
+
+procedure TFrmPrincipal.SubMenLanMudancaDeSalarioClick(
+  Sender: TObject);
+begin
+  FrmLancarMudancaDeSalario:= TFrmLancarMudancaDeSalario.Create(Self);
+  FrmLancarMudancaDeSalario.ShowModal;
+  FrmLancarMudancaDeSalario.Free;
+end;
+
+procedure TFrmPrincipal.SubMenRelEventosClick(Sender: TObject);
+begin
+  //...
+end;
+
+procedure TFrmPrincipal.SubMenRelINSSClick(Sender: TObject);
+begin
+  //...
+end;
+
+procedure TFrmPrincipal.SubMenRelIRRFClick(Sender: TObject);
+begin
+  //...
+end;
+
+procedure TFrmPrincipal.SubMenRelListaDeCargosClick(Sender: TObject);
+begin
+  //...
+end;
+
+procedure TFrmPrincipal.SubMenRelListaDeFuncionariosClick(
+  Sender: TObject);
+begin
+  //...
 end;
 
 end.

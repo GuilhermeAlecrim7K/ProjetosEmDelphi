@@ -1,7 +1,7 @@
-object FrmLancarEventos: TFrmLancarEventos
+object FrmLancarMudancaCargo: TFrmLancarMudancaCargo
   Left = 0
   Top = 0
-  Caption = 'Lan'#231'ar Eventos'
+  Caption = 'Lan'#231'ar Mudan'#231'a de Cargo'
   ClientHeight = 201
   ClientWidth = 447
   Color = clBtnFace

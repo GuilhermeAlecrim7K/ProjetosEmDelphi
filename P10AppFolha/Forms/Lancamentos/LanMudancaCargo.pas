@@ -1,4 +1,4 @@
-unit LanEventos;
+unit LanMudancaCargo;
 
 interface
 
@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
 type
-  TFrmLancarEventos = class(TForm)
+  TFrmLancarMudancaCargo = class(TForm)
   private
     { Private declarations }
   public
@@ -15,7 +15,7 @@ type
   end;
 
 var
-  FrmLancarEventos: TFrmLancarEventos;
+  FrmLancarMudancaCargo: TFrmLancarMudancaCargo;
 
 implementation
 
