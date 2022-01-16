@@ -1,9 +1,9 @@
-object FCadFuncionario: TFCadFuncionario
+object FrmLancarMudancaDeSalario: TFrmLancarMudancaDeSalario
   Left = 0
   Top = 0
-  Caption = 'Funcion'#225'rios'
-  ClientHeight = 438
-  ClientWidth = 485
+  Caption = 'Lan'#231'amento de Mudan'#231'a de Sal'#225'rio'
+  ClientHeight = 201
+  ClientWidth = 447
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

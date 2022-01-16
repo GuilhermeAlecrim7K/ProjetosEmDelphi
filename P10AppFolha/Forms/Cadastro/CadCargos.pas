@@ -1,4 +1,4 @@
-unit FrmMudSalario;
+unit CadCargos;
 
 interface
 
@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
 type
-  TFMudSalario = class(TForm)
+  TFrmCadastroCargos = class(TForm)
   private
     { Private declarations }
   public
@@ -15,7 +15,7 @@ type
   end;
 
 var
-  FMudSalario: TFMudSalario;
+  FrmCadastroCargos: TFrmCadastroCargos;
 
 implementation
 

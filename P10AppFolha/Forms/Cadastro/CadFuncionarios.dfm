@@ -1,7 +1,7 @@
-object FCadEventos: TFCadEventos
+object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
   Left = 0
   Top = 0
-  Caption = 'Eventos'
+  Caption = 'Cadastro de Funcion'#225'rios'
   ClientHeight = 201
   ClientWidth = 447
   Color = clBtnFace

@@ -1,13 +1,13 @@
-unit FrmCadFuncionario;
+unit LanMudancaSalario;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Connection;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
 type
-  TFCadFuncionario = class(TForm)
+  TFrmLancarMudancaDeSalario = class(TForm)
   private
     { Private declarations }
   public
@@ -15,7 +15,7 @@ type
   end;
 
 var
-  FCadFuncionario: TFCadFuncionario;
+  FrmLancarMudancaDeSalario: TFrmLancarMudancaDeSalario;
 
 implementation
 

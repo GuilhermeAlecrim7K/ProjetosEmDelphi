@@ -1,7 +1,7 @@
-object FMudSalario: TFMudSalario
+object FrmLancamentoEventos: TFrmLancamentoEventos
   Left = 0
   Top = 0
-  Caption = 'FMudSalario'
+  Caption = 'Lan'#231'amento de Eventos'
   ClientHeight = 201
   ClientWidth = 447
   Color = clBtnFace

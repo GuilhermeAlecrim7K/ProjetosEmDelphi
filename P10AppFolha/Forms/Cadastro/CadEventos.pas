@@ -1,13 +1,13 @@
-unit FrmCadEventos;
+unit CadEventos;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Connection;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
 type
-  TFCadEventos = class(TForm)
+  TFrmCadastroEventos = class(TForm)
   private
     { Private declarations }
   public
@@ -15,7 +15,7 @@ type
   end;
 
 var
-  FCadEventos: TFCadEventos;
+  FrmCadastroEventos: TFrmCadastroEventos;
 
 implementation
 
