@@ -143,31 +143,35 @@ const
   E_TITLE_IS_NOT_VALID = 'Caracteres especiais e números não permitidos neste campo';
   E_QUANTIA_INVALIDA = 'Quantia Inválida';
 var
-  ErrorMsg: string;
+  ErrorMsg, vCodigo, vTituloCargo, vSalarioBase: string;
   HasException: boolean;
 begin
-  HasException:= False; ErrorMsg:= '';
+  HasException:= False;
+  ErrorMsg:= '';
+  vCodigo:= DbEdtCodigoCargo.Text;
+  vTituloCargo:= DbEdtTituloCargo.Text;
+  vSalarioBase:= DbEdtSalarioBaseCargo.Text;
   if QryCadCargos.State in [dsInsert, dsEdit] then
     begin
       if QryCadCargos.State = dsInsert then
         begin
           while not HasException do
             begin
-              if Trim(DbEdtCodigoCargo.Text) = '' then
+              if Trim(vCodigo) = '' then
                 begin
                   DbEdtCodigoCargo.SetFocus;
                   ErrorMsg:= E_FIELD_IS_EMPTY;
                   HasException:= True;
                   break;
                 end;
-              if (Trim(DbEdtTituloCargo.Text) = '') then
+              if (Trim(vTituloCargo) = '') then
                 begin
                   DbEdtTituloCargo.SetFocus;
                   ErrorMsg:= E_FIELD_IS_EMPTY;
                   HasException:= True;
                   break;
                 end;
-              if not IsValidName(DbEdtTituloCargo.Text) then
+              if not IsValidName(vTituloCargo) then
                 begin
                   DbEdtTituloCargo.SetFocus;
                   ErrorMsg:= E_TITLE_IS_NOT_VALID;
@@ -175,7 +179,7 @@ begin
                   break;
                 end;
               //exception está sendo lançada no OnLeave do componente
-              if (StrToCurr(DbEdtSalarioBaseCargo.EditText) < 0)  or (StrToCurr(DbEdtSalarioBaseCargo.EditText) > 999999) then
+              if (StrToCurr(DbEdtSalarioBaseCargo.EditText) < 0) or (StrToCurr(DbEdtSalarioBaseCargo.EditText) > 999999) then
                 begin
                   DbEdtSalarioBaseCargo.SetFocus;
                   ErrorMsg:= E_QUANTIA_INVALIDA;

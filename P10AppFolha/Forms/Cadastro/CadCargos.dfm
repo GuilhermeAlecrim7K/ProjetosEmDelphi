@@ -33,9 +33,6 @@ object FrmCadastroCargos: TFrmCadastroCargos
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 2
     OnChange = SetSQLState
-    ExplicitTop = -3
-    ExplicitWidth = 314
-    ExplicitHeight = 201
     object TabInclusao: TTabSheet
       Caption = 'Incluir novo registro'
       object LblCodigoCargo: TLabel
@@ -225,8 +222,6 @@ object FrmCadastroCargos: TFrmCadastroCargos
     Caption = 'Cancelar'
     TabOrder = 1
     OnClick = BtnCancelarClick
-    ExplicitLeft = 231
-    ExplicitTop = 168
   end
   object BtnSalvar: TButton
     Left = 410
@@ -237,8 +232,6 @@ object FrmCadastroCargos: TFrmCadastroCargos
     Caption = 'Salvar'
     TabOrder = 0
     OnClick = BtnSalvarClick
-    ExplicitLeft = 151
-    ExplicitTop = 168
   end
   object DtsCadCargos: TDataSource
     DataSet = QryCadCargos
@@ -282,7 +275,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
       FieldName = 'SALARIO_BASE'
       Origin = 'SALARIO_BASE'
       Required = True
-      currency = True
+      EditFormat = #39'R$ '#39' #,.00'
       MaxValue = 999999.000000000000000000
       Precision = 8
     end
