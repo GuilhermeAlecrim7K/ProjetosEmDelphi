@@ -10,7 +10,14 @@ uses
   CadEventos in 'Forms\Cadastro\CadEventos.pas' {FrmCadastroEventos},
   LanMudancaSalario in 'Forms\Lancamentos\LanMudancaSalario.pas' {FrmLancarMudancaDeSalario},
   LanEventos in 'Forms\Lancamentos\LanEventos.pas' {FrmLancarEventos},
-  LanMudancaCargo in 'Forms\Lancamentos\LanMudancaCargo.pas' {FrmLancarMudancaCargo};
+  LanMudancaCargo in 'Forms\Lancamentos\LanMudancaCargo.pas' {FrmLancarMudancaCargo},
+  RelCargos in 'Forms\Relatorios\RelCargos.pas' {FrmListaCargos},
+  RelFuncionarios in 'Forms\Relatorios\RelFuncionarios.pas' {FrmRelatorioFuncionarios},
+  RelEventos in 'Forms\Relatorios\RelEventos.pas' {FrmRelatorioEventos},
+  RelMudancaSalario in 'Forms\Relatorios\RelMudancaSalario.pas' {FrmRelatorioMudancaSalario},
+  RelFinanceiroINSS in 'Forms\Relatorios\RelFinanceiroINSS.pas' {FrmRelatorioINSS},
+  RelFinanceiroIRRF in 'Forms\Relatorios\RelFinanceiroIRRF.pas' {FrmRelatorioFinanceiroIRRF},
+  Procedimentos in 'Patterns\Procedimentos.pas';
 
 {$R *.res}
 

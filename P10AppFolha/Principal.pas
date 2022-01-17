@@ -68,7 +68,9 @@ implementation
 
 uses
   CalculosINSSeIRRF, CadCargos, CadEventos,
-  CadFuncionarios, LanEventos, LanMudancaSalario, LanMudancaCargo;
+  CadFuncionarios, LanEventos, LanMudancaSalario, LanMudancaCargo,
+  RelCargos, RelFuncionarios, RelEventos, RelMudancaSalario,
+  RelFinanceiroINSS, RelFinanceiroIRRF;
 
 {$R *.dfm}
 
@@ -138,6 +140,8 @@ end;
 procedure TFrmPrincipal.SubMenCadCargosClick(Sender: TObject);
 begin
   FrmCadastroCargos:= TFrmCadastroCargos.Create(Self);
+  FrmCadastroCargos.Height:= 250;
+  FrmCadastroCargos.Width:= 320;
   FrmCadastroCargos.ShowModal;
   FrmCadastroCargos.Free;
 end;
@@ -191,12 +195,16 @@ end;
 
 procedure TFrmPrincipal.SubMenRelEventosClick(Sender: TObject);
 begin
-  //...
+  FrmRelatorioEventos:= TFrmRelatorioEventos.Create(Self);
+  FrmRelatorioEventos.ShowModal;
+  FrmRelatorioEventos.Free;
 end;
 
 procedure TFrmPrincipal.SubMenRelINSSClick(Sender: TObject);
 begin
-  //...
+  FrmRelatorioINSS:= TFrmRelatorioINSS.Create(Self);
+  FrmRelatorioINSS.ShowModal;
+  FrmRelatorioINSS.Free;
 end;
 
 procedure TFrmPrincipal.SubMenRelIRRFClick(Sender: TObject);
@@ -206,13 +214,17 @@ end;
 
 procedure TFrmPrincipal.SubMenRelListaDeCargosClick(Sender: TObject);
 begin
-  //...
+  FrmListaCargos:= TFrmListaCargos.Create(Self);
+  FrmListaCargos.ShowModal;
+  FrmListaCargos.Free;
 end;
 
 procedure TFrmPrincipal.SubMenRelListaDeFuncionariosClick(
   Sender: TObject);
 begin
-  //...
+  FrmRelatorioFuncionarios:= TFrmRelatorioFuncionarios.Create(Self);
+  FrmRelatorioFuncionarios.ShowModal;
+  FrmRelatorioFuncionarios.Free;
 end;
 
 end.

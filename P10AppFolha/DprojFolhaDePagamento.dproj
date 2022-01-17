@@ -132,6 +132,31 @@
             <Form>FrmLancarMudancaCargo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Forms\Relatorios\RelCargos.pas">
+            <Form>FrmListaCargos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Relatorios\RelFuncionarios.pas">
+            <Form>FrmRelatorioFuncionarios</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Relatorios\RelEventos.pas">
+            <Form>FrmRelatorioEventos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Relatorios\RelMudancaSalario.pas">
+            <Form>FrmRelatorioMudancaSalario</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Relatorios\RelFinanceiroINSS.pas">
+            <Form>FrmRelatorioINSS</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Relatorios\RelFinanceiroIRRF.pas">
+            <Form>FrmRelatorioFinanceiroIRRF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Patterns\Procedimentos.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

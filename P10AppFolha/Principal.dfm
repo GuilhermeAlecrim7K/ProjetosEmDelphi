@@ -14,7 +14,7 @@ object FrmPrincipal: TFrmPrincipal
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
-  Position = poDesigned
+  Position = poDesktopCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignSize = (
@@ -53,6 +53,8 @@ object FrmPrincipal: TFrmPrincipal
     object TabTabelas: TTabSheet
       Caption = 'Tabelas de INSS e IRRF'
       ImageIndex = 1
+      ParentShowHint = False
+      ShowHint = False
       object LblINSS: TLabel
         Left = 3
         Top = 3
