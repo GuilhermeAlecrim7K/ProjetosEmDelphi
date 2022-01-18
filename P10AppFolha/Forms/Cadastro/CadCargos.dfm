@@ -28,10 +28,10 @@ object FrmCadastroCargos: TFrmCadastroCargos
     Top = 0
     Width = 573
     Height = 451
-    ActivePage = TabInclusao
+    ActivePage = TabEdicao
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
-    TabOrder = 2
+    TabOrder = 0
     OnChange = SetSQLState
     object TabInclusao: TTabSheet
       Caption = 'Incluir novo registro'
@@ -41,7 +41,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
         Width = 33
         Height = 13
         Caption = 'C'#243'digo'
-        FocusControl = DbEdtCodigoCargo
+        FocusControl = DbEdtCodigoInclusao
       end
       object LblSalarioBaseCargo: TLabel
         Left = 3
@@ -49,7 +49,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
         Width = 121
         Height = 13
         Caption = 'Sal'#225'rio base da categoria'
-        FocusControl = DbEdtSalarioBaseCargo
+        FocusControl = DbEdtSalarioBaseInclusao
       end
       object LblTituloCargo: TLabel
         Left = 3
@@ -57,7 +57,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
         Width = 73
         Height = 13
         Caption = 'T'#237'tulo do Cargo'
-        FocusControl = DbEdtTituloCargo
+        FocusControl = DbEdtTituloInclusao
       end
       object DbChkBoxStatusAtivo: TDBCheckBox
         Left = 243
@@ -67,29 +67,31 @@ object FrmCadastroCargos: TFrmCadastroCargos
         Caption = 'Ativo'
         DataField = 'STATUS'
         DataSource = DtsCadCargos
-        TabOrder = 0
+        TabOrder = 1
         ValueChecked = '1'
         ValueUnchecked = '0'
       end
-      object DbEdtCodigoCargo: TDBEdit
+      object DbEdtCodigoInclusao: TDBEdit
         Left = 3
         Top = 17
         Width = 56
         Height = 21
         DataField = 'CODIGO'
         DataSource = DtsCadCargos
-        TabOrder = 1
+        TabOrder = 0
+        OnExit = CheckCamposInclusao
       end
-      object DbEdtSalarioBaseCargo: TDBEdit
+      object DbEdtSalarioBaseInclusao: TDBEdit
         Left = 3
         Top = 97
         Width = 134
         Height = 21
         DataField = 'SALARIO_BASE'
         DataSource = DtsCadCargos
-        TabOrder = 2
+        TabOrder = 3
+        OnExit = CheckCamposInclusao
       end
-      object DbEdtTituloCargo: TDBEdit
+      object DbEdtTituloInclusao: TDBEdit
         Left = 3
         Top = 57
         Width = 241
@@ -97,7 +99,8 @@ object FrmCadastroCargos: TFrmCadastroCargos
         CharCase = ecUpperCase
         DataField = 'NOME'
         DataSource = DtsCadCargos
-        TabOrder = 3
+        TabOrder = 2
+        OnExit = CheckCamposInclusao
       end
     end
     object TabEdicao: TTabSheet
@@ -116,7 +119,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
         Left = 228
         Top = 3
         Width = 75
-        Height = 25
+        Height = 22
         Caption = 'Pesquisar'
         TabOrder = 1
         OnClick = BtnPesquisarClick
@@ -137,7 +140,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
         TitleFont.Height = -11
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
-        OnCellClick = DbgEdicaoCellClick
+        OnColEnter = DbgEdicaoColEnter
         Columns = <
           item
             Expanded = False
@@ -151,7 +154,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
           end
           item
             Expanded = False
-            FieldName = 'STATUS'
+            FieldName = 'CALC_STATUS'
             Visible = True
           end>
       end
@@ -169,7 +172,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
           Width = 33
           Height = 13
           Caption = 'C'#243'digo'
-          FocusControl = DBEdit1
+          FocusControl = DBEdtCodigoEdicao
         end
         object Label2: TLabel
           Left = 11
@@ -177,9 +180,9 @@ object FrmCadastroCargos: TFrmCadastroCargos
           Width = 73
           Height = 13
           Caption = 'T'#237'tulo do Cargo'
-          FocusControl = DBEdit2
+          FocusControl = DbEdtTituloEdicao
         end
-        object DBEdit1: TDBEdit
+        object DBEdtCodigoEdicao: TDBEdit
           Left = 11
           Top = 25
           Width = 56
@@ -187,8 +190,9 @@ object FrmCadastroCargos: TFrmCadastroCargos
           DataField = 'CODIGO'
           DataSource = DtsCadCargos
           TabOrder = 0
+          OnExit = CheckCamposInclusao
         end
-        object DBEdit2: TDBEdit
+        object DbEdtTituloEdicao: TDBEdit
           Left = 11
           Top = 65
           Width = 241
@@ -197,8 +201,9 @@ object FrmCadastroCargos: TFrmCadastroCargos
           DataField = 'NOME'
           DataSource = DtsCadCargos
           TabOrder = 1
+          OnExit = CheckCamposInclusao
         end
-        object DBCheckBox1: TDBCheckBox
+        object DbChkBoxAtivoEdicao: TDBCheckBox
           Left = 203
           Top = 19
           Width = 49
@@ -220,7 +225,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
     Height = 25
     Anchors = [akRight, akBottom]
     Caption = 'Cancelar'
-    TabOrder = 1
+    TabOrder = 2
     OnClick = BtnCancelarClick
   end
   object BtnSalvar: TButton
@@ -230,7 +235,8 @@ object FrmCadastroCargos: TFrmCadastroCargos
     Height = 25
     Anchors = [akRight, akBottom]
     Caption = 'Salvar'
-    TabOrder = 0
+    Enabled = False
+    TabOrder = 1
     OnClick = BtnSalvarClick
   end
   object DtsCadCargos: TDataSource
@@ -247,6 +253,8 @@ object FrmCadastroCargos: TFrmCadastroCargos
     end
   end
   object QryCadCargos: TFDQuery
+    OnCalcFields = QryCadCargosCalcFields
+    IndexFieldNames = 'CODIGO;NOME'
     Connection = DM.ConnectionFB
     SQL.Strings = (
       'SELECT * FROM CARGOS'
@@ -275,7 +283,7 @@ object FrmCadastroCargos: TFrmCadastroCargos
       FieldName = 'SALARIO_BASE'
       Origin = 'SALARIO_BASE'
       Required = True
-      EditFormat = #39'R$ '#39' #,.00'
+      currency = True
       MaxValue = 999999.000000000000000000
       Precision = 8
     end
@@ -286,6 +294,14 @@ object FrmCadastroCargos: TFrmCadastroCargos
       Origin = 'STATUS'
       FixedChar = True
       Size = 1
+    end
+    object QryCadCargosCALC_STATUS: TStringField
+      DisplayLabel = 'Status'
+      FieldKind = fkCalculated
+      FieldName = 'CALC_STATUS'
+      KeyFields = 'STATUS'
+      Size = 10
+      Calculated = True
     end
   end
 end

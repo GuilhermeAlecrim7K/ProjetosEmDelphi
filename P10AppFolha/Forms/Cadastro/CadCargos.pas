@@ -24,12 +24,12 @@ type
     QryCadCargosSTATUS: TStringField;
     DbChkBoxStatusAtivo: TDBCheckBox;
     LblCodigoCargo: TLabel;
-    DbEdtCodigoCargo: TDBEdit;
+    DbEdtCodigoInclusao: TDBEdit;
     LblTituloCargo: TLabel;
-    DbEdtTituloCargo: TDBEdit;
+    DbEdtTituloInclusao: TDBEdit;
     BtnCancelar: TButton;
     LblSalarioBaseCargo: TLabel;
-    DbEdtSalarioBaseCargo: TDBEdit;
+    DbEdtSalarioBaseInclusao: TDBEdit;
     PgCtrCadCargos: TPageControl;
     TabInclusao: TTabSheet;
     TabEdicao: TTabSheet;
@@ -38,10 +38,11 @@ type
     DbgEdicao: TDBGrid;
     PnlEdicao: TPanel;
     Label1: TLabel;
-    DBEdit1: TDBEdit;
+    DBEdtCodigoEdicao: TDBEdit;
     Label2: TLabel;
-    DBEdit2: TDBEdit;
-    DBCheckBox1: TDBCheckBox;
+    DbEdtTituloEdicao: TDBEdit;
+    DbChkBoxAtivoEdicao: TDBCheckBox;
+    QryCadCargosCALC_STATUS: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure MenuHeadListaCargosClick(Sender: TObject);
@@ -49,10 +50,17 @@ type
     procedure BtnPesquisarClick(Sender: TObject);
     procedure BtnSalvarClick(Sender: TObject);
     procedure BtnCancelarClick(Sender: TObject);
-    procedure DbgEdicaoCellClick(Column: TColumn);
+    procedure CheckCamposInclusao(Sender: TObject);
+    procedure DbgEdicaoColEnter(Sender: TObject);
+    procedure QryCadCargosCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
+    FQryCodigo: string;
+    FQryTituloCargo: string;
+    FQrySalarioBase: currency;
+    FIndexErro: byte;
     procedure LimparCampos;
+    function QueryReadyToPost(out AMsg: string): boolean;
   public
     { Public declarations }
   end;
@@ -88,37 +96,55 @@ begin
   FrmListaCargos.Show;
 end;
 
+procedure TFrmCadastroCargos.QryCadCargosCalcFields(
+  DataSet: TDataSet);
+begin
+  if QryCadCargosSTATUS.AsInteger = 1 then
+    QryCadCargosCALC_STATUS.AsString:= 'Ativo'
+  else
+    QryCadCargosCALC_STATUS.AsString:= 'Inativo';
+end;
+
+function TFrmCadastroCargos.QueryReadyToPost(out AMsg: string): boolean;
+begin
+  FQryCodigo:= QryCadCargosCODIGO.AsString;
+  FQryTituloCargo:= QryCadCargosNOME.AsString;
+  FQrySalarioBase:= QryCadCargosSALARIO_BASE.AsCurrency;
+  Result:= ValidarCamposCadastroCargo(FQryCodigo, FQryTituloCargo, FQrySalarioBase, FIndexErro, AMsg);
+end;
+
 procedure TFrmCadastroCargos.BtnPesquisarClick(Sender: TObject);
 var
   Query: string; 
 begin
-//'NOME LIKE ''%' + LblEdtNomeCargo.Text + '%'' AND '
   Query:= 'SELECT * FROM CARGOS WHERE NOME LIKE ' + QuotedStr('%' + EdtPesquisar.Text + '%');
   QryCadCargos.Open(Query);
-  if not QryCadCargos.IsEmpty then
+  if QryCadCargos.IsEmpty then
+    begin
+      PnlEdicao.Visible:= False;
+    end
+  else
     begin
       PnlEdicao.Visible:= True;
       QryCadCargos.Edit;
-    end
-end;
-
-procedure TFrmCadastroCargos.DbgEdicaoCellClick(Column: TColumn);
-begin
-//  ShowMessage('Entrei');
+    end;
 end;
 
 procedure TFrmCadastroCargos.LimparCampos;
 begin
-  PgCtrCadCargos.FindNextPage(PgCtrCadCargos.ActivePage, True, False).Visible:= True;
+  //PgCtrCadCargos.FindNextPage(PgCtrCadCargos.ActivePage, True, False).Visible:= True;
   //Componentes de Inclusão
-  DbEdtCodigoCargo.Clear;
-  DbEdtTituloCargo.Clear;
-  DbEdtSalarioBaseCargo.Text:= '1212,00';
+  DbEdtCodigoInclusao.Clear;
+  DbEdtTituloInclusao.Clear;
+  DbEdtSalarioBaseInclusao.Text:= '1212,00';
   DbChkBoxStatusAtivo.Checked:= False;
 
   //Componentes de edição 
   PnlEdicao.Visible:= False;
   EdtPesquisar.Text:= '';
+
+  BtnSalvar.Enabled:= False;
+  FrmCadastroCargos.SetFocus;
 end;
 
 procedure TFrmCadastroCargos.SetSQLState(Sender: TObject);
@@ -134,72 +160,50 @@ begin
     begin
       FrmCadastroCargos.Height:= 360;
       QryCadCargos.Open;
+      QryCadCargos.Edit;
+      FrmCadastroCargos.SetFocus;
     end;
 end;
 
 procedure TFrmCadastroCargos.BtnSalvarClick(Sender: TObject);
-const
-  E_FIELD_IS_EMPTY = 'Este campo não pode ficar vazio';
-  E_TITLE_IS_NOT_VALID = 'Caracteres especiais e números não permitidos neste campo';
-  E_QUANTIA_INVALIDA = 'Quantia Inválida';
 var
-  ErrorMsg, vCodigo, vTituloCargo, vSalarioBase: string;
-  HasException: boolean;
+  EndMessage: string;
 begin
-  HasException:= False;
-  ErrorMsg:= '';
-  vCodigo:= DbEdtCodigoCargo.Text;
-  vTituloCargo:= DbEdtTituloCargo.Text;
-  vSalarioBase:= DbEdtSalarioBaseCargo.Text;
   if QryCadCargos.State in [dsInsert, dsEdit] then
     begin
+      if not QueryReadyToPost(EndMessage) then
+        raise Exception.Create(EndMessage);
       if QryCadCargos.State = dsInsert then
-        begin
-          while not HasException do
-            begin
-              if Trim(vCodigo) = '' then
-                begin
-                  DbEdtCodigoCargo.SetFocus;
-                  ErrorMsg:= E_FIELD_IS_EMPTY;
-                  HasException:= True;
-                  break;
-                end;
-              if (Trim(vTituloCargo) = '') then
-                begin
-                  DbEdtTituloCargo.SetFocus;
-                  ErrorMsg:= E_FIELD_IS_EMPTY;
-                  HasException:= True;
-                  break;
-                end;
-              if not IsValidName(vTituloCargo) then
-                begin
-                  DbEdtTituloCargo.SetFocus;
-                  ErrorMsg:= E_TITLE_IS_NOT_VALID;
-                  HasException:= True;
-                  break;
-                end;
-              //exception está sendo lançada no OnLeave do componente
-              if (StrToCurr(DbEdtSalarioBaseCargo.EditText) < 0) or (StrToCurr(DbEdtSalarioBaseCargo.EditText) > 999999) then
-                begin
-                  DbEdtSalarioBaseCargo.SetFocus;
-                  ErrorMsg:= E_QUANTIA_INVALIDA;
-                  HasException:= True;
-                  break;
-                end;
-              break;
-            end;
-          if HasException then
-            raise Exception.Create(ErrorMsg)
-          else
-            ShowMessage('Cadastro realizado com sucesso');
-        end
+        ShowMessage('Cadastro concluído com sucesso')
       else
-        begin
-          //tratamento do dsEdit
-        end;
+        ShowMessage('Cadastro editado com sucesso');
       QryCadCargos.Post;
       LimparCampos;
     end;
+end;
+
+procedure TFrmCadastroCargos.CheckCamposInclusao(Sender: TObject);
+var
+  EndMessage: string;
+begin
+  if QueryReadyToPost(EndMessage) then
+    BtnSalvar.Enabled:= True
+  else
+    BtnSalvar.Enabled:= False;
+end;
+
+procedure TFrmCadastroCargos.DbgEdicaoColEnter(Sender: TObject);
+begin
+  if QryCadCargos.IsEmpty then
+  begin
+    PnlEdicao.Visible:= False;
+    BtnSalvar.Enabled:= False;
+  end
+  else
+  begin
+    PnlEdicao.Visible:= True;
+    BtnSalvar.Enabled:= True;
+  end;
 end;
 
 procedure TFrmCadastroCargos.BtnCancelarClick(Sender: TObject);
