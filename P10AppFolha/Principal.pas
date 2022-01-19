@@ -6,7 +6,11 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, System.UITypes, Vcl.Graphics,  Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.Menus, Vcl.Grids,
-  Vcl.StdCtrls, Conexao;
+  Vcl.StdCtrls, Conexao, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
+  FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.DBGrids;
 
 type
   TFrmPrincipal = class(TForm)
@@ -36,10 +40,25 @@ type
     TabTabelas: TTabSheet;
     LblINSS: TLabel;
     LbIRRF: TLabel;
-    StrGrdTabelaINSS: TStringGrid;
-    StrGrdTabelaIRRF: TStringGrid;
+    DbgInss: TDBGrid;
+    DtsInss: TDataSource;
+    DtsIrrf: TDataSource;
+    TblInss: TFDTable;
+    TblIrrf: TFDTable;
+    DbgIrrf: TDBGrid;
+    TblIrrfALIQUOTA: TSingleField;
+    TblIrrfLIMITE_SALARIO: TSingleField;
+    TblInssALIQUOTA: TSingleField;
+    TblInssLIMITE_SALARIO: TSingleField;
+    TblInssCAL_LIMITE: TStringField;
+    TblInssCAL_ALIQUOTA: TStringField;
+    TblIrrfCAL_LIMITE: TStringField;
+    TblIrrfCAL_ALIQUOTA: TStringField;
+    TblIrrfCAL_DEDUCAO: TStringField;
+    TblInssFAIXA_CONTRIBUICAO: TStringField;
+    TblIrrfFAIXA_CONTRIBUICAO: TStringField;
+    TblIrrfDEDUCAO: TSingleField;
     procedure FormCreate(Sender: TObject);
-    procedure SetINSSandIRRFTables;
     procedure SubMenCadFuncionariosClick(Sender: TObject);
     procedure SubMenCadCargosClick(Sender: TObject);
     procedure SubMenCadEventosClick(Sender: TObject);
@@ -55,6 +74,8 @@ type
     procedure SubMenFolPagCalcularClick(Sender: TObject);
     procedure SubMenFolPagFolhasAnterioresClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure TblInssCalcFields(DataSet: TDataSet);
+    procedure TblIrrfCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -78,7 +99,9 @@ uses
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
 begin
   DM:= TDM.Create(Self);
-  SetINSSandIRRFTables;
+  PgCtrInicio.ActivePage:= TabResumoEmpresa;
+  TblInss.Active:= True;
+  TblIrrf.Active:= True;
   FrmPrincipal.Height:= 480; FrmPrincipal.Width:= 720;
   StatusBar1.Panels[0].Text:= 'Status: Conectado';
   //Em caso de falha conexão de rede criar um evento do TFDConnection
@@ -95,46 +118,6 @@ procedure TFrmPrincipal.MenuHeadSairClick(Sender: TObject);
 begin
   if MessageDlg('Tem certeza que deseja abandonar a aplicação?', mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then
     Application.Terminate;
-end;
-
-procedure TFrmPrincipal.SetINSSandIRRFTables;
-begin
-  StrGrdTabelaINSS.ColWidths[0]:= 180;
-  StrGrdTabelaINSS.Cells[0,0]:= 'Salário de contribuição';
-  StrGrdTabelaINSS.Cells[0,1]:= Format('até %m', [INSS.Faixa1Limite]);
-  StrGrdTabelaINSS.Cells[0,2]:= Format('%m até %m', [INSS.Faixa1Limite + 0.01, IRRF.Faixa2Limite]);
-  StrGrdTabelaINSS.Cells[0,3]:= Format('%m até %m', [INSS.Faixa2Limite + 0.01, IRRF.Faixa2Limite]);
-  StrGrdTabelaINSS.Cells[0,4]:= Format('%m até %m', [INSS.Faixa3Limite + 0.01, INSS.Faixa4Limite]);
-  StrGrdTabelaINSS.ColWidths[1]:= 60;
-  StrGrdTabelaINSS.Cells[1,0]:= 'Alíquota';
-  StrGrdTabelaINSS.Cells[1,1]:= Format('%f%%', [INSS.AliquotaFaixa1 *100]);
-  StrGrdTabelaINSS.Cells[1,2]:= Format('%f%%', [INSS.AliquotaFaixa2 *100]);
-  StrGrdTabelaINSS.Cells[1,3]:= Format('%f%%', [INSS.AliquotaFaixa3 *100]);
-  StrGrdTabelaINSS.Cells[1,4]:= Format('%f%%', [INSS.AliquotaFaixa4 *100]);
-  StrGrdTabelaINSS.Width:= StrGrdTabelaINSS.ColWidths[0] + StrGrdTabelaINSS.ColWidths[1];
-
-  StrGrdTabelaIRRF.ColWidths[0]:= 180;
-  StrGrdTabelaIRRF.Cells[0,0]:= 'Base de cálculo';
-  StrGrdTabelaIRRF.Cells[0,1]:= Format('de %m até %m', [0.0, IRRF.FaixaIsencaoLimite]);
-  StrGrdTabelaIRRF.Cells[0,2]:= Format('de %m até %m', [IRRF.FaixaIsencaoLimite + 0.01, IRRF.Faixa1Limite]);
-  StrGrdTabelaIRRF.Cells[0,3]:= Format('de %m até %m', [IRRF.Faixa1Limite + 0.01, IRRF.Faixa2Limite]);
-  StrGrdTabelaIRRF.Cells[0,4]:= Format('de %m até %m', [IRRF.Faixa2Limite + 0.01, IRRF.Faixa3Limite]);
-  StrGrdTabelaIRRF.Cells[0,5]:= Format('A partir de %m', [IRRF.Faixa3Limite + 0.01]);
-  StrGrdTabelaIRRF.ColWidths[1]:= 60;
-  StrGrdTabelaIRRF.Cells[1,0]:= 'Alíquota';
-  StrGrdTabelaIRRF.Cells[1,1]:= 'isento';
-  StrGrdTabelaIRRF.Cells[1,2]:= Format('%f%%', [IRRF.AliquotaFaixa1 *100]);
-  StrGrdTabelaIRRF.Cells[1,3]:= Format('%f%%', [INSS.AliquotaFaixa2 *100]);
-  StrGrdTabelaIRRF.Cells[1,4]:= Format('%f%%', [INSS.AliquotaFaixa3 *100]);
-  StrGrdTabelaIRRF.Cells[1,5]:= Format('%f%%', [INSS.AliquotaFaixa4 *100]);
-  StrGrdTabelaIRRF.ColWidths[2]:= 80;
-  StrGrdTabelaIRRF.Cells[2,0]:= 'Dedução';
-  StrGrdTabelaIRRF.Cells[2,1]:= Format('%m', [0.0]);
-  StrGrdTabelaIRRF.Cells[2,2]:= Format('%m', [IRRF.DeducaoFaixa1]);
-  StrGrdTabelaIRRF.Cells[2,3]:= Format('%m', [IRRF.DeducaoFaixa2]);
-  StrGrdTabelaIRRF.Cells[2,4]:= Format('%m', [IRRF.DeducaoFaixa3]);
-  StrGrdTabelaIRRF.Cells[2,5]:= Format('%m', [IRRF.DeducaoFaixa4]);
-  StrGrdTabelaIRRF.Width:= StrGrdTabelaIRRF.ColWidths[0] + StrGrdTabelaIRRF.ColWidths[1] + StrGrdTabelaIRRF.ColWidths[2];
 end;
 
 procedure TFrmPrincipal.SubMenCadCargosClick(Sender: TObject);
@@ -225,6 +208,19 @@ begin
   FrmRelatorioFuncionarios:= TFrmRelatorioFuncionarios.Create(Self);
   FrmRelatorioFuncionarios.ShowModal;
   FrmRelatorioFuncionarios.Free;
+end;
+
+procedure TFrmPrincipal.TblInssCalcFields(DataSet: TDataSet);
+begin
+  TblInssCAL_LIMITE.AsString:= Format('Até %m', [TblInssLIMITE_SALARIO.AsCurrency]);
+  TblInssCAL_ALIQUOTA.AsString:= Format('%f%%', [TblInssALIQUOTA.AsFloat*100]);
+end;
+
+procedure TFrmPrincipal.TblIrrfCalcFields(DataSet: TDataSet);
+begin
+  TblIrrfCAL_LIMITE.AsString:= Format('Até %m', [TblIrrfLIMITE_SALARIO.AsCurrency]);
+  TblIrrfCAL_ALIQUOTA.AsString:= Format('%f%%', [TblIrrfALIQUOTA.AsFloat*100]);
+  TblIrrfCAL_DEDUCAO.AsString:= Format('%m', [TblIrrfDEDUCAO.AsCurrency]);
 end;
 
 end.
