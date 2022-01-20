@@ -6,16 +6,17 @@ program ProjetoDelphiBasics;
 
 uses
   System.SysUtils,
+  StrUtils,
   Variaveis in 'Variaveis.pas',
   Arrays in 'Arrays.pas',
   Records in 'Records.pas',
-  ClasseConta in 'ClasseConta.pas';
+  ClasseConta in 'ClasseConta.pas',
+  ProvaDeSelecao in 'ProvaDeSelecao.pas';
 
-var
-  I: Integer;
 begin
   try
     { TODO -oUser -cConsole Main : Insert code here }
+    WriteLn('Hello World!');
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

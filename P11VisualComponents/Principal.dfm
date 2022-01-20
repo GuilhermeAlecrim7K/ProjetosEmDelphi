@@ -1,9 +1,10 @@
 object FrmPrincipal: TFrmPrincipal
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
   Caption = 'Componentes Visuais Delphi'
-  ClientHeight = 508
-  ClientWidth = 822
+  ClientHeight = 540
+  ClientWidth = 677
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +12,7 @@ object FrmPrincipal: TFrmPrincipal
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesigned
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
@@ -191,6 +193,7 @@ object FrmPrincipal: TFrmPrincipal
         Top = 39
         Width = 186
         Height = 21
+        Margins.Bottom = 10
         Date = 44568.000000000000000000
         Time = 0.911774502317712200
         TabOrder = 11
@@ -200,7 +203,7 @@ object FrmPrincipal: TFrmPrincipal
         Top = 66
         Width = 225
         Height = 160
-        Date = 44568.000000000000000000
+        Date = 44652.000000000000000000
         TabOrder = 12
       end
       object Button1: TButton
@@ -235,13 +238,10 @@ object FrmPrincipal: TFrmPrincipal
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 822
+    Width = 677
     Height = 29
     Caption = 'ToolBar1'
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = -3
-    ExplicitWidth = 766
     object ToolButton1: TToolButton
       Left = 0
       Top = 0
@@ -251,8 +251,8 @@ object FrmPrincipal: TFrmPrincipal
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 489
-    Width = 822
+    Top = 521
+    Width = 677
     Height = 19
     Panels = <
       item
@@ -266,9 +266,8 @@ object FrmPrincipal: TFrmPrincipal
       item
         Width = 50
       end>
-    ExplicitLeft = 536
-    ExplicitTop = 329
-    ExplicitWidth = 765
+    ExplicitTop = 489
+    ExplicitWidth = 822
   end
   object ImageList1: TImageList
     Left = 692
