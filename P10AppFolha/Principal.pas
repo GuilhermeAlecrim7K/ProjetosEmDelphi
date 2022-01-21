@@ -132,6 +132,7 @@ end;
 procedure TFrmPrincipal.SubMenCadEventosClick(Sender: TObject);
 begin
   FrmCadastroEventos:= TFrmCadastroEventos.Create(Self);
+  FrmCadastroEventos.Height:= 350; FrmCadastroEventos.width:= 490;
   FrmCadastroEventos.ShowModal;
   FrmCadastroEventos.Free;
 end;

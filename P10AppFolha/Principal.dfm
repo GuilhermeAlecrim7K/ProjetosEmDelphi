@@ -38,8 +38,6 @@ object FrmPrincipal: TFrmPrincipal
         Text = 'Data do dia'
         Width = 50
       end>
-    ExplicitTop = 489
-    ExplicitWidth = 781
   end
   object PgCtrInicio: TPageControl
     Left = 0
@@ -49,8 +47,6 @@ object FrmPrincipal: TFrmPrincipal
     ActivePage = TabResumoEmpresa
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 1
-    ExplicitWidth = 793
-    ExplicitHeight = 484
     object TabResumoEmpresa: TTabSheet
       Caption = 'Resumo da empresa'
     end
@@ -102,6 +98,7 @@ object FrmPrincipal: TFrmPrincipal
         TitleFont.Height = -11
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
+        StyleElements = [seFont, seClient]
         Columns = <
           item
             Expanded = False
