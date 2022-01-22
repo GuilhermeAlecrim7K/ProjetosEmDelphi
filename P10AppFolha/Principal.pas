@@ -47,9 +47,7 @@ type
     TblIrrf: TFDTable;
     DbgIrrf: TDBGrid;
     TblIrrfALIQUOTA: TSingleField;
-    TblIrrfLIMITE_SALARIO: TSingleField;
     TblInssALIQUOTA: TSingleField;
-    TblInssLIMITE_SALARIO: TSingleField;
     TblInssCAL_LIMITE: TStringField;
     TblInssCAL_ALIQUOTA: TStringField;
     TblIrrfCAL_LIMITE: TStringField;
@@ -58,6 +56,10 @@ type
     TblInssFAIXA_CONTRIBUICAO: TStringField;
     TblIrrfFAIXA_CONTRIBUICAO: TStringField;
     TblIrrfDEDUCAO: TSingleField;
+    TblInssLIMITE_MAX_SALARIO: TSingleField;
+    TblInssLIMITE_MIN_SALARIO: TSingleField;
+    TblIrrfLIMITE_MIN_SALARIO: TSingleField;
+    TblIrrfLIMITE_MAX_SALARIO: TSingleField;
     procedure FormCreate(Sender: TObject);
     procedure SubMenCadFuncionariosClick(Sender: TObject);
     procedure SubMenCadCargosClick(Sender: TObject);
@@ -213,13 +215,13 @@ end;
 
 procedure TFrmPrincipal.TblInssCalcFields(DataSet: TDataSet);
 begin
-  TblInssCAL_LIMITE.AsString:= Format('Até %m', [TblInssLIMITE_SALARIO.AsCurrency]);
+  TblInssCAL_LIMITE.AsString:= Format('De %m até %m', [TblInssLIMITE_MIN_SALARIO.AsCurrency,TblInssLIMITE_MAX_SALARIO.AsCurrency]);
   TblInssCAL_ALIQUOTA.AsString:= Format('%f%%', [TblInssALIQUOTA.AsFloat*100]);
 end;
 
 procedure TFrmPrincipal.TblIrrfCalcFields(DataSet: TDataSet);
 begin
-  TblIrrfCAL_LIMITE.AsString:= Format('Até %m', [TblIrrfLIMITE_SALARIO.AsCurrency]);
+  TblIrrfCAL_LIMITE.AsString:= Format('De %m até %m', [TblIrrfLIMITE_MIN_SALARIO.AsCurrency, TblIrrfLIMITE_MAX_SALARIO.AsCurrency]);
   TblIrrfCAL_ALIQUOTA.AsString:= Format('%f%%', [TblIrrfALIQUOTA.AsFloat*100]);
   TblIrrfCAL_DEDUCAO.AsString:= Format('%m', [TblIrrfDEDUCAO.AsCurrency]);
 end;

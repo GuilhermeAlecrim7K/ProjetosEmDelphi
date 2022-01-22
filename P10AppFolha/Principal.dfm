@@ -84,7 +84,7 @@ object FrmPrincipal: TFrmPrincipal
       object DbgInss: TDBGrid
         Left = 3
         Top = 49
-        Width = 342
+        Width = 430
         Height = 120
         TabStop = False
         DataSource = DtsInss
@@ -104,7 +104,7 @@ object FrmPrincipal: TFrmPrincipal
             Expanded = False
             FieldName = 'CAL_LIMITE'
             Title.Caption = 'Faixa de Contribui'#231#227'o'
-            Width = 150
+            Width = 200
             Visible = True
           end
           item
@@ -112,14 +112,14 @@ object FrmPrincipal: TFrmPrincipal
             Expanded = False
             FieldName = 'CAL_ALIQUOTA'
             Title.Caption = 'Al'#237'quota'
-            Width = 55
+            Width = 70
             Visible = True
           end>
       end
       object DbgIrrf: TDBGrid
         Left = 3
         Top = 233
-        Width = 342
+        Width = 430
         Height = 120
         TabStop = False
         DataSource = DtsIrrf
@@ -138,7 +138,7 @@ object FrmPrincipal: TFrmPrincipal
             Expanded = False
             FieldName = 'CAL_LIMITE'
             Title.Caption = 'Faixa de Contribui'#231#227'o'
-            Width = 150
+            Width = 200
             Visible = True
           end
           item
@@ -146,7 +146,7 @@ object FrmPrincipal: TFrmPrincipal
             Expanded = False
             FieldName = 'CAL_ALIQUOTA'
             Title.Caption = 'Al'#237'quota'
-            Width = 55
+            Width = 70
             Visible = True
           end
           item
@@ -258,19 +258,16 @@ object FrmPrincipal: TFrmPrincipal
       FieldName = 'ALIQUOTA'
       Origin = 'ALIQUOTA'
     end
-    object TblInssLIMITE_SALARIO: TSingleField
-      FieldName = 'LIMITE_SALARIO'
-      Origin = 'LIMITE_SALARIO'
-    end
     object TblInssCAL_LIMITE: TStringField
       FieldKind = fkCalculated
       FieldName = 'CAL_LIMITE'
+      Size = 50
       Calculated = True
     end
     object TblInssCAL_ALIQUOTA: TStringField
       FieldKind = fkCalculated
       FieldName = 'CAL_ALIQUOTA'
-      Size = 5
+      Size = 7
       Calculated = True
     end
     object TblInssFAIXA_CONTRIBUICAO: TStringField
@@ -280,6 +277,15 @@ object FrmPrincipal: TFrmPrincipal
       Required = True
       FixedChar = True
       Size = 1
+    end
+    object TblInssLIMITE_MIN_SALARIO: TSingleField
+      DisplayWidth = 15
+      FieldName = 'LIMITE_MIN_SALARIO'
+      Origin = 'LIMITE_MIN_SALARIO'
+    end
+    object TblInssLIMITE_MAX_SALARIO: TSingleField
+      FieldName = 'LIMITE_MAX_SALARIO'
+      Origin = 'LIMITE_MAX_SALARIO'
     end
   end
   object TblIrrf: TFDTable
@@ -293,20 +299,16 @@ object FrmPrincipal: TFrmPrincipal
       FieldName = 'ALIQUOTA'
       Origin = 'ALIQUOTA'
     end
-    object TblIrrfLIMITE_SALARIO: TSingleField
-      FieldName = 'LIMITE_SALARIO'
-      Origin = 'LIMITE_SALARIO'
-    end
     object TblIrrfCAL_LIMITE: TStringField
       FieldKind = fkCalculated
       FieldName = 'CAL_LIMITE'
-      Size = 15
+      Size = 40
       Calculated = True
     end
     object TblIrrfCAL_ALIQUOTA: TStringField
       FieldKind = fkCalculated
       FieldName = 'CAL_ALIQUOTA'
-      Size = 5
+      Size = 8
       Calculated = True
     end
     object TblIrrfCAL_DEDUCAO: TStringField
@@ -326,6 +328,14 @@ object FrmPrincipal: TFrmPrincipal
     object TblIrrfDEDUCAO: TSingleField
       FieldName = 'DEDUCAO'
       Origin = 'DEDUCAO'
+    end
+    object TblIrrfLIMITE_MIN_SALARIO: TSingleField
+      FieldName = 'LIMITE_MIN_SALARIO'
+      Origin = 'LIMITE_MIN_SALARIO'
+    end
+    object TblIrrfLIMITE_MAX_SALARIO: TSingleField
+      FieldName = 'LIMITE_MAX_SALARIO'
+      Origin = 'LIMITE_MAX_SALARIO'
     end
   end
 end
