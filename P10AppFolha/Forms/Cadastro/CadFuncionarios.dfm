@@ -4,8 +4,8 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Funcion'#225'rios'
-  ClientHeight = 571
-  ClientWidth = 894
+  ClientHeight = 425
+  ClientWidth = 994
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,9 +21,9 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
   object PgCtrFuncionarios: TPageControl
     Left = 0
     Top = 0
-    Width = 894
-    Height = 571
-    ActivePage = TabOperacoes
+    Width = 994
+    Height = 425
+    ActivePage = TabListaFuncionarios
     Align = alClient
     TabOrder = 0
     object TabListaFuncionarios: TTabSheet
@@ -31,7 +31,7 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
       object DbgFuncionarios: TDBGrid
         Left = 3
         Top = 3
-        Width = 838
+        Width = 970
         Height = 350
         DataSource = DtsFuncionarios
         ReadOnly = True
@@ -41,6 +41,7 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
         TitleFont.Height = -11
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
+        OnTitleClick = DbgFuncionariosTitleClick
         Columns = <
           item
             Expanded = False
@@ -50,11 +51,13 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
           item
             Expanded = False
             FieldName = 'NOME'
+            Width = 250
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'C_TITULO_CARGO'
+            Width = 150
             Visible = True
           end
           item
@@ -65,12 +68,13 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
           item
             Expanded = False
             FieldName = 'CONTATO'
+            Title.Caption = 'Contato'
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'EMAIL'
-            Width = 200
+            Width = 150
             Visible = True
           end
           item
@@ -80,8 +84,8 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
           end>
       end
       object BtnIncluir: TButton
-        Left = 531
-        Top = 359
+        Left = 726
+        Top = 367
         Width = 75
         Height = 25
         Caption = 'Novo'
@@ -89,27 +93,40 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
         OnClick = BtnIncluirClick
       end
       object BtnEditar: TButton
-        Left = 612
-        Top = 359
+        Left = 807
+        Top = 367
         Width = 75
         Height = 25
         Caption = 'Editar'
         TabOrder = 2
+        OnClick = BtnEditarClick
       end
       object BtnInativar: TButton
-        Left = 693
-        Top = 359
+        Left = 888
+        Top = 367
         Width = 75
         Height = 25
         Caption = 'Inativar'
         TabOrder = 3
+        OnClick = BtnInativarClick
       end
-      object Edit1: TEdit
+      object EdtBuscaFuncionario: TEdit
         Left = 3
-        Top = 359
+        Top = 367
         Width = 121
         Height = 21
         TabOrder = 4
+        TextHint = 'Pesquisar'
+        OnChange = EdtBuscaFuncionarioChange
+      end
+      object ChkBoxShowAtivos: TCheckBox
+        Left = 130
+        Top = 369
+        Width = 159
+        Height = 17
+        Caption = 'Mostrar funcion'#225'rios inativos'
+        TabOrder = 5
+        OnClick = ChkBoxShowAtivosClick
       end
     end
     object TabOperacoes: TTabSheet
@@ -157,7 +174,7 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
       object LblPadraoEmailCorporativo: TLabel
         Left = 137
         Top = 192
-        Width = 133
+        Width = 129
         Height = 13
         Caption = '@alecrimtecnologia.com.br'
       end
@@ -168,7 +185,6 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
         Height = 21
         DataField = 'CODIGO'
         DataSource = DtsFuncionarios
-        MaxLength = 6
         TabOrder = 0
       end
       object DbEdtNome: TDBEdit
@@ -188,7 +204,6 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
         Height = 21
         DataField = 'CONTATO'
         DataSource = DtsFuncionarios
-        MaxLength = 16
         TabOrder = 3
       end
       object DbEdtEmail: TDBEdit
@@ -260,18 +275,21 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
           ListField = 'C_COD_NOME'
           ListSource = DtsCargos
           TabOrder = 0
+          OnCloseUp = DbLkpCmbBoxCargoCloseUp
         end
         object DbEdtSalarioInicial: TDBEdit
           Left = 12
           Top = 59
           Width = 121
           Height = 21
+          DataField = 'SALARIO_ATUAL'
+          DataSource = DtsFuncionarios
           TabOrder = 1
         end
       end
       object BtnSalvar: TButton
-        Left = 304
-        Top = 376
+        Left = 181
+        Top = 365
         Width = 75
         Height = 25
         Caption = 'Salvar'
@@ -279,8 +297,8 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
         OnClick = BtnSalvarClick
       end
       object BtnCancelar: TButton
-        Left = 385
-        Top = 376
+        Left = 262
+        Top = 365
         Width = 75
         Height = 25
         Caption = 'Cancelar'
@@ -290,12 +308,11 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
     end
   end
   object QryFuncionarios: TFDQuery
-    Active = True
     OnCalcFields = QryFuncionariosCalcFields
-    IndexFieldNames = 'NOME;CODIGO'
+    IndexFieldNames = 'NOME'
     Connection = DM.ConnectionFB
     SQL.Strings = (
-      'SELECT * FROM FUNCIONARIOS')
+      'SELECT * FROM FUNCIONARIOS WHERE STATUS = 1')
     Left = 360
     Top = 8
     object QryFuncionariosCODIGO: TStringField
@@ -365,6 +382,10 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
       Size = 10
       Calculated = True
     end
+    object QryFuncionariosSALARIO_ATUAL: TSingleField
+      FieldName = 'SALARIO_ATUAL'
+      Origin = 'SALARIO_ATUAL'
+    end
   end
   object DtsFuncionarios: TDataSource
     DataSet = QryFuncionarios
@@ -372,6 +393,7 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
     Top = 56
   end
   object QryCargos: TFDQuery
+    Active = True
     OnCalcFields = QryCargosCalcFields
     IndexFieldNames = 'NOME'
     Connection = DM.ConnectionFB
@@ -414,6 +436,9 @@ object FrmCadastroFuncionarios: TFrmCadastroFuncionarios
     Top = 152
   end
   object QrySalarios: TFDQuery
+    Connection = DM.ConnectionFB
+    SQL.Strings = (
+      'SELECT * FROM HIST_ALTER_SALARIO_INDIVIDUAL')
     Left = 356
     Top = 200
   end

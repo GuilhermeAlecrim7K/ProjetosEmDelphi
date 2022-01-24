@@ -17,7 +17,8 @@ uses
   RelMudancaSalario in 'Forms\Relatorios\RelMudancaSalario.pas' {FrmRelatorioMudancaSalario},
   RelFinanceiroINSS in 'Forms\Relatorios\RelFinanceiroINSS.pas' {FrmRelatorioINSS},
   RelFinanceiroIRRF in 'Forms\Relatorios\RelFinanceiroIRRF.pas' {FrmRelatorioFinanceiroIRRF},
-  Procedimentos in 'Patterns\Procedimentos.pas';
+  Procedimentos in 'Patterns\Procedimentos.pas',
+  Padroes in 'Patterns\Padroes.pas';
 
 {$R *.res}
 

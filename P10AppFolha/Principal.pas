@@ -142,6 +142,7 @@ end;
 procedure TFrmPrincipal.SubMenCadFuncionariosClick(Sender: TObject);
 begin
   FrmCadastroFuncionarios:= TFrmCadastroFuncionarios.Create(Self);
+  FrmCadastroFuncionarios.Height:= 450; FrmCadastroFuncionarios.Width:= 1000;
   FrmCadastroFuncionarios.ShowModal;
   FrmCadastroFuncionarios.Free;
 end;
