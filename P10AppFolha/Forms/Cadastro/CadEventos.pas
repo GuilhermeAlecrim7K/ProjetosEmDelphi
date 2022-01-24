@@ -27,10 +27,6 @@ type
     TblEventosNOME: TStringField;
     TblEventosCALC_TIPO: TStringField;
     TblEventosTIPO: TStringField;
-    QryCadEventos: TFDQuery;
-    QryCadEventosCODIGO: TStringField;
-    QryCadEventosNOME: TStringField;
-    QryCadEventosTIPO: TStringField;
     Label1: TLabel;
     DBEdit1: TDBEdit;
     Label2: TLabel;
@@ -48,6 +44,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
+    OperationMsg: string;
     procedure ResizeForm(Width, Height: integer);
   public
     { Public declarations }
@@ -92,24 +89,24 @@ begin
   TabCrud.Caption:= 'Incluir novo registro';
   TabCrud.TabVisible:= True;
   ResizeForm(200, 250);
+  OperationMsg:= 'Novo registro criado com sucesso';
 end;
 
 procedure TFrmCadastroEventos.BtnIncluirClick(Sender: TObject);
 begin
+  ResizeForm(200, 250);
   TblEventos.Append;
   TabListaEventos.TabVisible:= False;
   TabCrud.Caption:= 'Editar registro';
   TabCrud.TabVisible:= True;
-  ResizeForm(200, 250);
+  DbRadGrpTipo.ItemIndex:= 0;
+  OperationMsg:= 'Registro editado com sucesso';
 end;
 
 procedure TFrmCadastroEventos.BtnSalvarClick(Sender: TObject);
 begin
   TblEventos.Post;
-  if TblEventos.State = dsInsert then
-    ShowMessage('Novo registro criado com sucesso')
-  else
-    MessageDlg('Registro editado com sucesso', mtConfirmation, [mbOk],0);
+  MessageDlg(OperationMsg, mtConfirmation, [mbOk],0);
   TabListaEventos.TabVisible:= True;
   TabCrud.TabVisible:= False;
   ResizeForm(490, 350);

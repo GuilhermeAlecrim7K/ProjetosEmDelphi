@@ -4,8 +4,8 @@ object FrmCadastroEventos: TFrmCadastroEventos
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Eventos'
-  ClientHeight = 276
-  ClientWidth = 410
+  ClientHeight = 220
+  ClientWidth = 475
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,60 +21,60 @@ object FrmCadastroEventos: TFrmCadastroEventos
   object PgCtrCadEventos: TPageControl
     Left = 0
     Top = 0
-    Width = 410
-    Height = 276
+    Width = 475
+    Height = 220
     ActivePage = TabListaEventos
     Align = alClient
     TabOrder = 0
     TabStop = False
-    ExplicitWidth = 484
-    ExplicitHeight = 321
+    ExplicitWidth = 410
+    ExplicitHeight = 276
     object TabListaEventos: TTabSheet
       Caption = 'Lista de Eventos Cadastrados'
       DesignSize = (
-        402
-        248)
+        467
+        192)
       object BtnIncluir: TButton
-        Left = 162
-        Top = 220
+        Left = 227
+        Top = 164
         Width = 75
         Height = 25
         Anchors = [akRight, akBottom]
-        Caption = 'Incluir'
+        Caption = 'Novo'
         TabOrder = 0
         OnClick = BtnIncluirClick
-        ExplicitLeft = 239
-        ExplicitTop = 303
+        ExplicitLeft = 162
+        ExplicitTop = 220
       end
       object BtnEditar: TButton
-        Left = 243
-        Top = 220
+        Left = 308
+        Top = 164
         Width = 75
         Height = 25
         Anchors = [akRight, akBottom]
         Caption = 'Editar'
         TabOrder = 1
         OnClick = BtnEditarClick
-        ExplicitLeft = 320
-        ExplicitTop = 303
+        ExplicitLeft = 243
+        ExplicitTop = 220
       end
       object BtnDeletar: TButton
-        Left = 324
-        Top = 220
+        Left = 389
+        Top = 164
         Width = 75
         Height = 25
         Anchors = [akRight, akBottom]
         Caption = 'Deletar'
         TabOrder = 2
         OnClick = BtnDeletarClick
-        ExplicitLeft = 401
-        ExplicitTop = 303
+        ExplicitLeft = 324
+        ExplicitTop = 220
       end
       object DbgEventos: TDBGrid
         Left = 0
         Top = 0
-        Width = 399
-        Height = 215
+        Width = 464
+        Height = 159
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DtsCadEventos
         Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -133,7 +133,6 @@ object FrmCadastroEventos: TFrmCadastroEventos
         Height = 21
         DataField = 'CODIGO'
         DataSource = DtsCadEventos
-        MaxLength = 5
         TabOrder = 0
       end
       object DBEdit2: TDBEdit
@@ -141,6 +140,7 @@ object FrmCadastroEventos: TFrmCadastroEventos
         Top = 72
         Width = 174
         Height = 21
+        CharCase = ecUpperCase
         DataField = 'NOME'
         DataSource = DtsCadEventos
         TabOrder = 1
@@ -188,7 +188,6 @@ object FrmCadastroEventos: TFrmCadastroEventos
     Top = 8
   end
   object TblEventos: TFDTable
-    Active = True
     OnCalcFields = TblEventosCalcFields
     IndexFieldNames = 'NOME;CODIGO;TIPO'
     Connection = DM.ConnectionFB
@@ -224,32 +223,6 @@ object FrmCadastroEventos: TFrmCadastroEventos
       KeyFields = 'CODIGO'
       Size = 15
       Calculated = True
-    end
-  end
-  object QryCadEventos: TFDQuery
-    Active = True
-    Connection = DM.ConnectionFB
-    SQL.Strings = (
-      'SELECT * FROM EVENTOS')
-    Left = 368
-    Top = 8
-    object QryCadEventosCODIGO: TStringField
-      FieldName = 'CODIGO'
-      Origin = 'CODIGO'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-      Size = 5
-    end
-    object QryCadEventosNOME: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
-      Size = 30
-    end
-    object QryCadEventosTIPO: TStringField
-      FieldName = 'TIPO'
-      Origin = 'TIPO'
-      FixedChar = True
-      Size = 1
     end
   end
 end
