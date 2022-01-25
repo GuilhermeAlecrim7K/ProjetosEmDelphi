@@ -98,8 +98,7 @@ begin
   if MessageDlg('Tem certeza que deseja cancelar a operação?', mtWarning, [mbYes, mbNo], 0) = mrYes then
   begin
     QryFuncionarios.Cancel;
-    TabListaFuncionarios.TabVisible:= True;
-    TabOperacoes.TabVisible:= False;
+    ChangeToListaFuncionarios;
   end;
 end;
 
